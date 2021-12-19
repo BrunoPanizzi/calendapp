@@ -21,13 +21,6 @@ export default function Home() {
 					<SmallCalendar title={title} key={id} size={(width * .9 - 36) / 2}/>
 				))}
 			</View>
-			
-			<TouchableOpacity 
-				style={styles.button} 
-				onPress={() => navigation.navigate('Calendar')}
-			>
-				<Text style={styles.text}>Go to calendar</Text>
-			</TouchableOpacity>
 		</View>
 	)
 }
@@ -48,10 +41,5 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		color: defaultStyles.colors[700]
-	},
-	button: {
-		backgroundColor: defaultStyles.colors[50],
-		borderRadius: defaultStyles.borderRadius,
-		padding: defaultStyles.spacing.medium
 	}
 })

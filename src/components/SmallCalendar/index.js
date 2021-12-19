@@ -1,10 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 import defaultStyles from '../../styles/defaultStyles'
 
 import SmallDay from './SmallDay'
 
 export default function SmallCalendar({ title, size }) {
+	const navigation = useNavigation()
+	
 	const innerWidth = size - 2 * defaultStyles.spacing.medium
 
 	const today = new Date()
@@ -28,7 +31,8 @@ export default function SmallCalendar({ title, size }) {
 	}
 
 	return (
-		<View 
+		<TouchableOpacity 
+			onPress={() => navigation.navigate('Calendar')}
 			style={[
 				styles.container, 
 				{width: size, height: size + defaultStyles.spacing.small}
@@ -38,13 +42,13 @@ export default function SmallCalendar({ title, size }) {
 			<View style={styles.calendarDays}>
 				{daysArr}
 			</View>
-		</View>
+		</TouchableOpacity>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: defaultStyles.colors[50],
+		backgroundColor: defaultStyles.colors[100],
 		marginBottom: 12,
 		padding: defaultStyles.spacing.medium,
 		borderRadius: defaultStyles.borderRadius

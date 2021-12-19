@@ -62,7 +62,7 @@ export default function CalendarComp() {
 const styles = StyleSheet.create({
 	container: {
 		borderRadius: defaultStyles.borderRadius,
-		backgroundColor: defaultStyles.colors[50],
+		backgroundColor: defaultStyles.colors[100],
 	},
 	days: {
 		width: '100%',
