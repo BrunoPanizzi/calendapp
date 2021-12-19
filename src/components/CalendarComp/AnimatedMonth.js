@@ -135,7 +135,7 @@ export default function AnimatedMonth({ currDate }) {
 const styles = StyleSheet.create({
 	text: {
 		position: 'absolute',
-		color: defaultStyles.colors.text,
+		color: defaultStyles.colors[700],
 		fontSize: defaultStyles.text.big,
 		textAlignVertical: 'center'
 	},

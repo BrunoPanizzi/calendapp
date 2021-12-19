@@ -3,7 +3,7 @@ import { StyleSheet, Text, Animated } from 'react-native'
 
 import defaultStyles from '../../styles/defaultStyles'
 
-export default function Day({ delay, day, isThisMonth }) {
+export default function Day({ delay, day, isThisMonth, size }) {
 
 	const opacity = useRef(new Animated.Value(0)).current
 
@@ -12,18 +12,17 @@ export default function Day({ delay, day, isThisMonth }) {
 			useNativeDriver: true,
 			toValue: 1,
 			duration: 200,
-			delay: delay*5
+			delay: delay * 5
 		}).start()
 	}, [])
 
 	return (
 		<Animated.View
-			onPress={() => {}}
 			style={[
 				styles.day, 
-				isThisMonth ? styles.inMonth : styles.notInMonth,
-				{opacity: opacity}
-			]}>
+				{ opacity, width: size, height: size }
+			]}
+		>
 			<Text style={[
 				styles.text,
 				isThisMonth ? styles.textInMonth : styles.textNotInMonth
@@ -36,36 +35,19 @@ export default function Day({ delay, day, isThisMonth }) {
 
 const styles = StyleSheet.create({
 	day: {
-		width: '13%',
-		marginBottom: '0.6%',
-		height: '16%',
-		justifyContent: 'center', 
+		marginTop: '1.2857%',  // magic number do not change
+		justifyContent: 'center',
 		alignItems: 'center',
 		borderRadius: defaultStyles.borderRadius,
-		elevation: 2
-	},
-	inMonth: {
-		backgroundColor: defaultStyles.colors.background,
-		borderWidth: 1,
-		borderColor: 'transparent',
-		borderBottomColor: defaultStyles.colors.text
-	},
-	notInMonth: {
-		backgroundColor: defaultStyles.colors.background,
 	},
 	text: {
 		fontSize: 16,
-		color: defaultStyles.colors.text
+		color: defaultStyles.colors[700]
 	},
 	textInMonth: {
 		fontWeight: 'bold'
 	},
 	textNotInMonth: {
-		color: defaultStyles.colors.main
-	},
-	events: {
-		height: '50%',
-		justifyContent: 'center', 
-		alignItems: 'center'
+		color: defaultStyles.colors[400]
 	}
 })

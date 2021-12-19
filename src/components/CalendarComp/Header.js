@@ -6,32 +6,32 @@ import defaultStyles from '../../styles/defaultStyles'
 import AnimatedMonth from './AnimatedMonth'
 
 export default function Header({ currDate, previousMonth, nextMonth }) {
-	
-	const days = [
-		<Text key={0} style={styles.day}>D</Text>,
-		<Text key={1} style={styles.day}>S</Text>,
-		<Text key={2} style={styles.day}>T</Text>,
-		<Text key={3} style={styles.day}>Q</Text>,
-		<Text key={4} style={styles.day}>Q</Text>,
-		<Text key={5} style={styles.day}>S</Text>,
-		<Text key={6} style={styles.day}>S</Text>,
-	]
+	const arrowConfig = {
+		size: defaultStyles.spacing.large,
+		color: defaultStyles.colors[700]
+	}
 	
 	return (
 		<View>
 			<View style={styles.months}>
-				<TouchableOpacity onPress={() => previousMonth()}>
-					<Ionicons name='chevron-back' size={30} color='white' />
+				<TouchableOpacity onPress={previousMonth}>
+					<Ionicons name='chevron-back' {...arrowConfig} />
 				</TouchableOpacity>
 
 				<AnimatedMonth currDate={currDate}/>
-				
-				<TouchableOpacity onPress={() => nextMonth()}>
-					<Ionicons name='chevron-forward' size={30} color='white' />
+
+				<TouchableOpacity onPress={nextMonth}>
+					<Ionicons name='chevron-forward' {...arrowConfig} />
 				</TouchableOpacity>
 			</View>
-			<View style={styles.weekDays}> 
-				{days}
+			<View style={styles.weekDays}>
+				<Text key={0} style={styles.day}>D</Text>
+				<Text key={1} style={styles.day}>S</Text>
+				<Text key={2} style={styles.day}>T</Text>
+				<Text key={3} style={styles.day}>Q</Text>
+				<Text key={4} style={styles.day}>Q</Text>
+				<Text key={5} style={styles.day}>S</Text>
+				<Text key={6} style={styles.day}>S</Text>
 			</View>
 		</View>
 	)
@@ -39,14 +39,13 @@ export default function Header({ currDate, previousMonth, nextMonth }) {
 
 const styles = StyleSheet.create({
 	months: {
-		padding: defaultStyles.spacing.small,
-		backgroundColor: defaultStyles.colors.main,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		borderRadius: defaultStyles.borderRadius,
 	},
 	weekDays: {
+		borderRadius: defaultStyles.borderRadius,
+		backgroundColor: defaultStyles.colors[0],
 		width: '100%',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -58,8 +57,7 @@ const styles = StyleSheet.create({
 		width: '13%',
 		fontSize: defaultStyles.text.normal,
 		fontWeight: 'bold',
-		color: defaultStyles.colors.text,
-		backgroundColor: defaultStyles.colors.main,
+		color: defaultStyles.colors[400],
 		borderRadius: defaultStyles.borderRadius,
 		padding: defaultStyles.spacing.small
 	}

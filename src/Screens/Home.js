@@ -20,16 +20,16 @@ export default function Home() {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: defaultStyles.colors.background,
+		backgroundColor: defaultStyles.colors[0],
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
 	text: {
-		color: defaultStyles.colors.text
+		color: defaultStyles.colors[700]
 	},
 	button: {
-		backgroundColor: defaultStyles.colors.main,
+		backgroundColor: defaultStyles.colors[50],
 		borderRadius: defaultStyles.borderRadius,
 		padding: defaultStyles.spacing.medium
 	}

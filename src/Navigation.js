@@ -14,9 +14,9 @@ export default function Navigation() {
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
-            backgroundColor: defaultStyles.colors.background
+            backgroundColor: defaultStyles.colors[0]
           },
-          headerTintColor: defaultStyles.colors.text,
+          headerTintColor: defaultStyles.colors[700],
           headerTitleAlign: 'center',
           headerTitleStyle: {
             fontWeight: 'bold', 
