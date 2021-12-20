@@ -17,19 +17,19 @@ export default function CalendarComp() {
 	const today = new Date()
 	const [month, setMonth] = useState(new Date(today.getFullYear(), today.getMonth()))
 	const calendarStart = new Date(month.valueOf() - month.getDay() * 24 * 60 * 60 * 1000)
+	
 	let daysArr = []
 
 	let assistDate = calendarStart.valueOf()
 	for (let i = 0; i < 42; i++) {
 		let currentDay = new Date(assistDate)
-		let isThisMonth = currentDay.getMonth() === month.getMonth()
 		let dayObj = 
 			<Day 
 				key={Math.random()} 
 				delay={i} 
-				day={currentDay} 
-				isThisMonth={isThisMonth}
-				size={width * 0.9 * 0.13}
+				day={currentDay}
+				isThisMonth={currentDay.getMonth() === month.getMonth()}
+				size={width * 0.9 / 7 + 0.24} // magic number do not touch
 			/>
 
 		daysArr.push(dayObj)

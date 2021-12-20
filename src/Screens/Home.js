@@ -1,5 +1,4 @@
-import { StyleSheet, Text,View, TouchableOpacity, Dimensions } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { StyleSheet, View, Dimensions } from 'react-native'
 
 import UserService from '../services/UserService'
 
@@ -9,16 +8,15 @@ import SmallCalendar from '../components/SmallCalendar'
 
 
 export default function Home() {
-	const navigation = useNavigation()
 	const { width } = Dimensions.get('window')
 	
 	const calendars = UserService.listCalendars('')
 	
 	return (
 		<View style={styles.container}>
-			<View style={[styles.calendarsList, {width: width * .9}]}>
+			<View style={[styles.calendarsList]}>
 				{calendars.map(({ id, title }) => (
-					<SmallCalendar title={title} key={id} size={(width * .9 - 36) / 2}/>
+					<SmallCalendar title={title} key={id} size={(width - 36) / 2}/>
 				))}
 			</View>
 		</View>
@@ -34,7 +32,6 @@ const styles = StyleSheet.create({
 	calendarsList: {
 		padding: 12,
 		paddingBottom: 0,
-		width: '90%',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
 		flexWrap: 'wrap'

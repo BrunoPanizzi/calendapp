@@ -5,7 +5,7 @@ export default function Index() {
   return (
 		<>
       <Navigation />
-			<StatusBar style='light' />
+			<StatusBar  />
 		</>
   )
 }
