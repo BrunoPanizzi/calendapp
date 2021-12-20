@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import { StyleSheet, View, Animated } from 'react-native'
+import PropTypes from 'prop-types'
 
 import defaultStyles from '../../styles/defaultStyles'
 
@@ -130,6 +131,10 @@ export default function AnimatedMonth({ currDate }) {
 			</Animated.Text>
 		</View>
 	)
+}
+
+AnimatedMonth.propTypes = {
+	currDate: PropTypes.instanceOf(Date).isRequired
 }
 
 const styles = StyleSheet.create({

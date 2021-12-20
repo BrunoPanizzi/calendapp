@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import PropTypes from 'prop-types'
 
 import defaultStyles from '../../styles/defaultStyles'
 
@@ -35,6 +36,12 @@ export default function Header({ currDate, previousMonth, nextMonth }) {
 			</View>
 		</View>
 	)
+}
+
+Header.propTypes = { 
+	currDate: PropTypes.instanceOf(Date).isRequired, 
+	previousMonth: PropTypes.func.isRequired, 
+	nextMonth: PropTypes.func.isRequired 
 }
 
 const styles = StyleSheet.create({

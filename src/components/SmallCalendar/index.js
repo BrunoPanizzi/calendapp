@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import PropTypes from 'prop-types'
 
 import defaultStyles from '../../styles/defaultStyles'
 
@@ -44,6 +45,11 @@ export default function SmallCalendar({ title, size }) {
 			</View>
 		</TouchableOpacity>
 	)
+}
+
+SmallCalendar.propTypes = { 
+	title: PropTypes.string.isRequired, 
+	size: PropTypes.number.isRequired 
 }
 
 const styles = StyleSheet.create({

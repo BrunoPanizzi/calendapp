@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
+import PropTypes from 'prop-types'
 
 import defaultStyles from '../../styles/defaultStyles'
 
@@ -18,6 +19,12 @@ export default function SmallDay({ day, isThisMonth, size }) {
 			>{day.getDate()}</Text>
 		</View>
 	)
+}
+
+SmallDay.propTypes = {
+	day: PropTypes.instanceOf(Date).isRequired,
+	isThisMonth: PropTypes.bool.isRequired,
+	size: PropTypes.number.isRequired
 }
 
 const styles = StyleSheet.create({
