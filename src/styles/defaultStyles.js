@@ -11,7 +11,7 @@ export default {
 		800: '#141536',
 		900: '#060713',
 	},
-	borderRadius: 8,
+	borderRadius: 6,
 	spacing: {
 		small: 8,
 		medium: 16,

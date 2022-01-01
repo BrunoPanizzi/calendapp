@@ -7,13 +7,7 @@ import Day from './Day'
 import Header from './Header'
 
 export default function CalendarComp() {
-	let { width } = Dimensions.get('window')
 
-	width *= 0.9
-	
-	let padding = defaultStyles.spacing.medium
-	width -= 2 * padding
-	
 	const today = new Date()
 	const [month, setMonth] = useState(new Date(today.getFullYear(), today.getMonth()))
 	const calendarStart = new Date(month.valueOf() - month.getDay() * 24 * 60 * 60 * 1000)
@@ -29,7 +23,7 @@ export default function CalendarComp() {
 				delay={i} 
 				day={currentDay}
 				isThisMonth={currentDay.getMonth() === month.getMonth()}
-				size={width * 0.9 / 7 + 0.24} // magic number do not touch
+				size={ 43.74 } // magic number do not touch
 			/>
 
 		daysArr.push(dayObj)
@@ -46,7 +40,7 @@ export default function CalendarComp() {
 
 
 	return (
-		<View style={[{ padding, width }, styles.container]}>
+		<View style={[ {padding: defaultStyles.spacing.medium}, styles.container]}>
 			<Header 
 				currDate={month}
 				previousMonth={previousMonth}

@@ -10,82 +10,75 @@ import defaultStyles from '../../styles/defaultStyles'
 const events = [
 	{
 		title: 'Evento',
-		color: '#7833cc88',
+		color: '#3ab61188',
 		type: 'single',
-		start: Date.now() // start is always a number 
+		start: Date.now(),
 	},
 	{
 		title: 'Evento',
-		color: '#6ecc3388',
+		color: '#3ab61133',
 		type: 'single',
-		start: Date.now()
+		start: Date.now(),
 	},
 	{
 		title: 'Evento grandao',
-		color: '#cc3399',
+		color: '#3ab6c988',
 		type: 'span',
 		start: Date.now(),
-		end: Date.now() + 8 * 24 * 60 * 60 * 1000
+		end: Date.now() + 3 * 24 * 60 * 60 * 1000
 	},
 	{
 		title: 'Evento grandao',
-		color: '#33cc8f',
+		color: '#da56c988',
 		type: 'span',
-		start: Date.now() + 2 * 24 * 60 * 1000,
-		end: Date.now() + 8 * 24 * 60 * 60 * 1000
+		start: Date.now() - 3 * 24 * 60 * 60 * 1000,
+		end: Date.now() + 1 * 24 * 60 * 60 * 1000
 	}
 ]
 
 export default function Day({ delay, day, isThisMonth, size }) {
 
-	// array that contains events to be displayed on this day
-	const eventsThisDay = events.map(e => e.type === 'single' && isSameDay(e.start, day) && e ).filter(e => !!e) // holy shit
+	const eventsThisDay = events.filter(e => e.type === 'single' && isSameDay(e.start, day))
+
+	let longEvents = events.filter(e => e.type === 'span' && isBetweenDates(e.start, e.end, day))
 	
-	const longEvent = events.find(e => e.type === 'span' && isBetweenDates(e.start, e.end, day))
-	let borderStyle
-	if (longEvent) {
-		if (isSameDay(longEvent.start, day)){
+	longEvents = longEvents.map((event) => {
+		let borderStyle
+
+		if (isSameDay(event.start, day)){
 			borderStyle = styles.beginning	
-		} else if (isSameDay(longEvent.end, day)) {
+		} else if (isSameDay(event.end, day)) {
 			borderStyle = styles.end
 		} else {
 			borderStyle = styles.middle
 		}
-	}
 
-	const opacity = useRef(new Animated.Value(0)).current
+		event.borderStyle = borderStyle // add borderStyle to event object, used to style the border of the component 
 
-	useEffect(() => {
-		Animated.timing(opacity, {
-			useNativeDriver: true,
-			toValue: 1,
-			duration: 200,
-			delay: delay * 5
-		}).start()
-	}, [])
-
+		return event
+	})
+	
 	return (
 		<Animated.View 
 			style={[
 				styles.day, 
-				{ opacity, width: size, height: size, padding: size * .075 },
-				longEvent && {borderColor: longEvent.color},
-				borderStyle
+				{ width: 100 / 7. + '%', aspectRatio: 1, padding: '2%' },
 			]}
 		>
-			<Text 
-				style={[
-					styles.text,
-					isThisMonth ? styles.textInMonth : styles.textNotInMonth
-				]}
-			>
+			<Text style={[styles.text, isThisMonth ? styles.textInMonth : styles.textNotInMonth]}>
 				{day.getDate()}
 			</Text>
 
 			<View style={styles.events}>
 				{eventsThisDay.map(e => <View key={Math.random()} style={{flex: 1, backgroundColor: e?.color}} />)}
 			</View>
-			
+
+			{longEvents.map(e => 
+				<View 
+					key={Math.random()} 
+					style={[ styles.longEvent, {borderColor: e?.color}, e.borderStyle]} 
+				/>
+			)}
 		</Animated.View>
 	)
 }
@@ -103,10 +96,6 @@ const styles = StyleSheet.create({
 		marginTop: '1%',  // magic number do not change
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderRadius: defaultStyles.borderRadius,
-		borderWidth: 2,
-		borderColor: 'transparent',
-		overflow: 'hidden'
 	},
 	text: {
 		position: 'absolute',
@@ -118,7 +107,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold'
 	},
 	textNotInMonth: {
-		color: defaultStyles.colors[400]
+		color: defaultStyles.colors[400],
 	},
 	events: {
 		width: '100%',
@@ -140,6 +129,12 @@ const styles = StyleSheet.create({
 		borderTopLeftRadius: 0,
 		borderBottomLeftRadius: 0,
 		borderLeftWidth: 0
+	},
+	longEvent: {
+		position: 'absolute',
+		top: 0, left: 0, bottom: 0, right: 0,
+		borderWidth: 2.5,
+		borderRadius: defaultStyles.borderRadius,
+		zIndex: -1,
 	}
-
 })
