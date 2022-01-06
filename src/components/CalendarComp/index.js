@@ -1,19 +1,14 @@
 import { useState } from 'react'
-import { StyleSheet, View, Dimensions } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import PropTypes from 'prop-types'
 
 import defaultStyles from '../../styles/defaultStyles'
 
 import Day from './Day'
 import Header from './Header'
 
-export default function CalendarComp() {
-	let { width } = Dimensions.get('window')
+export default function CalendarComp({ compact }) {
 
-	width *= 0.9
-	
-	let padding = defaultStyles.spacing.medium
-	width -= 2 * padding
-	
 	const today = new Date()
 	const [month, setMonth] = useState(new Date(today.getFullYear(), today.getMonth()))
 	const calendarStart = new Date(month.valueOf() - month.getDay() * 24 * 60 * 60 * 1000)
@@ -29,7 +24,7 @@ export default function CalendarComp() {
 				delay={i} 
 				day={currentDay}
 				isThisMonth={currentDay.getMonth() === month.getMonth()}
-				size={width * 0.9 / 7 + 0.24} // magic number do not touch
+				fontSize={compact ? 10 : 14}
 			/>
 
 		daysArr.push(dayObj)
@@ -46,17 +41,26 @@ export default function CalendarComp() {
 
 
 	return (
-		<View style={[{ padding, width }, styles.container]}>
+		<>
+			{!compact && 
 			<Header 
 				currDate={month}
 				previousMonth={previousMonth}
 				nextMonth={nextMonth}
-			/>
+			/>}
 			<View style={styles.days}>
 				{daysArr}
 			</View>
-		</View>
+		</>
 	)
+}
+
+CalendarComp.propTypes = {
+	compact: PropTypes.bool
+}
+
+CalendarComp.defaultProps = {
+	compact: false
 }
 
 const styles = StyleSheet.create({
