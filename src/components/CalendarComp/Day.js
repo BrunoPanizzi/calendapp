@@ -36,7 +36,7 @@ const events = [
 	}
 ]
 
-export default function Day({ delay, day, isThisMonth, size }) {
+export default function Day({ day, isThisMonth, fontSize }) {
 
 	const eventsThisDay = events.filter(e => e.type === 'single' && isSameDay(e.start, day))
 
@@ -62,10 +62,10 @@ export default function Day({ delay, day, isThisMonth, size }) {
 		<Animated.View 
 			style={[
 				styles.day, 
-				{ width: 100 / 7. + '%', aspectRatio: 1, padding: '2%' },
+				{ width: 100 / 7 + '%', aspectRatio: 1, padding: '2%' },
 			]}
 		>
-			<Text style={[styles.text, isThisMonth ? styles.textInMonth : styles.textNotInMonth]}>
+			<Text style={[styles.text, isThisMonth ? styles.textInMonth : styles.textNotInMonth, {fontSize}]}>
 				{day.getDate()}
 			</Text>
 
@@ -87,7 +87,7 @@ Day.propTypes = {
 	delay: PropTypes.number.isRequired, 
 	day: PropTypes.instanceOf(Date).isRequired, 
 	isThisMonth: PropTypes.bool.isRequired, 
-	size: PropTypes.number.isRequired
+	fontSize: PropTypes.number.isRequired
 }
 
 const styles = StyleSheet.create({

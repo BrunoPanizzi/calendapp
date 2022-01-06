@@ -7,7 +7,9 @@ import CalendarComp from '../components/CalendarComp'
 export default function Calendar() {
 	return (
 		<View style={styles.container}>
-			<CalendarComp />
+			<View style={styles.calendarContainer}>
+				<CalendarComp />
+			</View>
 		</View>
 	)
 }
@@ -19,4 +21,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: defaultStyles.spacing.large
 	},
+	calendarContainer: {
+		backgroundColor: defaultStyles.colors[100],
+		padding: defaultStyles.spacing.medium,
+		borderRadius: defaultStyles.borderRadius
+	}
 })
