@@ -1,13 +1,16 @@
+import { useContext } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import { Animated } from 'react-native'
+import { Animated, Dimensions } from 'react-native'
 
 import Home from './Screens/Home'
 import Calendar from './Screens/Calendar'
+import Login from './Screens/Login'
+
+import { AuthContext } from './contexts/AuthContext'
 
 import defaultStyles from './styles/defaultStyles'
-import { Dimensions } from 'react-native'
 
 const Stack = createStackNavigator()
 
@@ -61,35 +64,44 @@ const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
   };
 };
 
+function MainNavigation() {  
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: defaultStyles.colors[0]
+        },
+        headerTintColor: defaultStyles.colors[700],
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontWeight: 'bold', 
+          fontSize: defaultStyles.text.huge
+        },
+        presentation: 'card',
+        gestureEnabled: true,
+        gestureResponseDistance: 999,
+        transitionSpec: {
+          open: config,
+          close: config,
+        },
+        cardStyleInterpolator: forSlide
+      }}
+    >
+      <Stack.Screen name='Home' component={Home} />
+      <Stack.Screen name='Calendar' component={Calendar} />
+    </Stack.Navigator>
+  )
+}
+
 export default function Navigation() {
-  const { width } = Dimensions.get('screen')
+  const { auth } = useContext(AuthContext)
   
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: defaultStyles.colors[0]
-          },
-          headerTintColor: defaultStyles.colors[700],
-          headerTitleAlign: 'center',
-          headerTitleStyle: {
-            fontWeight: 'bold', 
-            fontSize: defaultStyles.text.huge
-          },
-          presentation: 'card',
-          gestureEnabled: true,
-          gestureResponseDistance: 999,
-          transitionSpec: {
-            open: config,
-            close: config,
-          },
-          cardStyleInterpolator: forSlide
-        }}
-      >
-        <Stack.Screen name='Home' component={Home} />
-        <Stack.Screen name='Calendar' component={Calendar} />
-      </Stack.Navigator>
+      {auth ? 
+        <MainNavigation /> : 
+        <Login /> 
+      }
     </NavigationContainer>
   )
 }
