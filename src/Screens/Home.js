@@ -25,11 +25,11 @@ export default function Home() {
 				{calendars.map(({ id, title }) => (
 					<TouchableOpacity 
 						style={[styles.calendarContainer, {width: width/2 - 18}]}
-						onPress={() => navigation.navigate('Calendar')}
+						onPress={() => navigation.navigate('Calendar', {id})}
 						key={id}
 					>
 						<Text style={styles.text}>{title}</Text>
-						<CalendarComp compact />
+						<CalendarComp compact id={id} />
 					</TouchableOpacity>
 				))}
 			</View>

@@ -2,12 +2,15 @@ import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import PropTypes from 'prop-types'
 
+import CalendarService from '../../services/CalendarService'
+
 import defaultStyles from '../../styles/defaultStyles'
 
 import Day from './Day'
 import Header from './Header'
 
-export default function CalendarComp({ compact }) {
+export default function CalendarComp({ compact, id }) {
+	const events = CalendarService.getInfo(id).events
 
 	const today = new Date()
 	const [month, setMonth] = useState(new Date(today.getFullYear(), today.getMonth()))
@@ -20,11 +23,12 @@ export default function CalendarComp({ compact }) {
 		let currentDay = new Date(assistDate)
 		let dayObj = 
 			<Day 
+				events={events}
 				key={Math.random()} 
 				delay={i} 
 				day={currentDay}
 				isThisMonth={currentDay.getMonth() === month.getMonth()}
-				fontSize={compact ? 10 : 14}
+				fontSize={compact ? 10 : 16}
 			/>
 
 		daysArr.push(dayObj)
@@ -56,7 +60,8 @@ export default function CalendarComp({ compact }) {
 }
 
 CalendarComp.propTypes = {
-	compact: PropTypes.bool
+	compact: PropTypes.bool,
+	id: PropTypes.string.isRequired
 }
 
 CalendarComp.defaultProps = {

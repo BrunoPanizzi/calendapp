@@ -7,36 +7,8 @@ import isBetweenDates from '../../utils/isBetweenDates'
 
 import defaultStyles from '../../styles/defaultStyles'
 
-const events = [
-	{
-		title: 'Evento',
-		color: '#3ab61188',
-		type: 'single',
-		start: Date.now(),
-	},
-	{
-		title: 'Evento',
-		color: '#3ab61133',
-		type: 'single',
-		start: Date.now(),
-	},
-	{
-		title: 'Evento grandao',
-		color: '#3ab6c988',
-		type: 'span',
-		start: Date.now(),
-		end: Date.now() + 3 * 24 * 60 * 60 * 1000
-	},
-	{
-		title: 'Evento grandao',
-		color: '#da56c988',
-		type: 'span',
-		start: Date.now() - 3 * 24 * 60 * 60 * 1000,
-		end: Date.now() + 1 * 24 * 60 * 60 * 1000
-	}
-]
 
-export default function Day({ day, isThisMonth, fontSize }) {
+export default function Day({ events, day, isThisMonth, fontSize }) {
 
 	const eventsThisDay = events.filter(e => e.type === 'single' && isSameDay(e.start, day))
 
@@ -53,8 +25,9 @@ export default function Day({ day, isThisMonth, fontSize }) {
 			borderStyle = styles.middle
 		}
 
-		event.borderStyle = borderStyle // add borderStyle to event object, used to style the border of the component 
-
+		// add borderStyle to event object, used to style the border of the component 
+		event.borderStyle = borderStyle 
+		
 		return event
 	})
 	
@@ -84,6 +57,7 @@ export default function Day({ day, isThisMonth, fontSize }) {
 }
 
 Day.propTypes = { 
+	events: PropTypes.array.isRequired,
 	delay: PropTypes.number.isRequired, 
 	day: PropTypes.instanceOf(Date).isRequired, 
 	isThisMonth: PropTypes.bool.isRequired, 

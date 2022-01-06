@@ -3,13 +3,17 @@ import { StyleSheet, Text, View } from 'react-native'
 import defaultStyles from '../styles/defaultStyles'
 
 import CalendarComp from '../components/CalendarComp'
+import NewEvent from '../components/NewEvent'
 
-export default function Calendar() {
+export default function Calendar({ route }) {
+	const { id } = route.params
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.calendarContainer}>
-				<CalendarComp />
+				<CalendarComp id={id} />
 			</View>
+			<NewEvent />
 		</View>
 	)
 }
