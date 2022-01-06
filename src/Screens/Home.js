@@ -1,4 +1,5 @@
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity } from 'react-native'
+import { useContext } from 'react'
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, Touchable } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 import UserService from '../services/UserService'
@@ -7,10 +8,13 @@ import defaultStyles from '../styles/defaultStyles'
 
 import CalendarComp from '../components/CalendarComp'
 
+import { AuthContext } from '../contexts/AuthContext'
+
 
 export default function Home() {
 	const { width } = Dimensions.get('window')
 	const navigation = useNavigation()
+	const { handleAuth } = useContext(AuthContext)
 	
 	const calendars = UserService.listCalendars('')
 	
@@ -29,6 +33,10 @@ export default function Home() {
 					</TouchableOpacity>
 				))}
 			</View>
+
+			<TouchableOpacity onPress={handleAuth}>
+				<Text>log out</Text>
+			</TouchableOpacity>
 		
 		</View>
 	)
