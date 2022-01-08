@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { StyleSheet, Text, View, Animated } from 'react-native'
-import PropTypes from 'prop-types'
+import propTypes from 'prop-types'
 
 import isSameDay from '../../utils/isSameDay'
 import isBetweenDates from '../../utils/isBetweenDates'
@@ -57,11 +57,11 @@ export default function Day({ events, day, isThisMonth, fontSize }) {
 }
 
 Day.propTypes = { 
-	events: PropTypes.array.isRequired,
-	delay: PropTypes.number.isRequired, 
-	day: PropTypes.instanceOf(Date).isRequired, 
-	isThisMonth: PropTypes.bool.isRequired, 
-	fontSize: PropTypes.number.isRequired
+	events: propTypes.array.isRequired,
+	delay: propTypes.number.isRequired, 
+	day: propTypes.instanceOf(Date).isRequired, 
+	isThisMonth: propTypes.bool.isRequired, 
+	fontSize: propTypes.number.isRequired
 }
 
 const styles = StyleSheet.create({

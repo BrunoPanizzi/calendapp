@@ -2,11 +2,12 @@ import { useContext } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import { Animated, Dimensions } from 'react-native'
+import { Animated } from 'react-native'
 
 import Home from './Screens/Home'
 import Calendar from './Screens/Calendar'
 import Login from './Screens/Login'
+import CreateEvent from './Screens/CreateEvent'
 
 import { AuthContext } from './contexts/AuthContext'
 
@@ -87,8 +88,20 @@ function MainNavigation() {
         cardStyleInterpolator: forSlide
       }}
     >
-      <Stack.Screen name='Home' component={Home} />
-      <Stack.Screen name='Calendar' component={Calendar} />
+      <Stack.Screen 
+        name='Home' 
+        component={Home} 
+      />
+      <Stack.Screen 
+        name='Calendar' 
+        component={Calendar}
+        options={({ route }) => ({title: route.params.title})}
+      />
+      <Stack.Screen 
+        name='CreateEvent' 
+        component={CreateEvent} 
+        options={{title: 'Novo Evento'}} 
+      />
     </Stack.Navigator>
   )
 }

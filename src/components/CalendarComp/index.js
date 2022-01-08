@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import PropTypes from 'prop-types'
+import propTypes from 'prop-types'
 
 import CalendarService from '../../services/CalendarService'
 
@@ -60,8 +60,8 @@ export default function CalendarComp({ compact, id }) {
 }
 
 CalendarComp.propTypes = {
-	compact: PropTypes.bool,
-	id: PropTypes.string.isRequired
+	compact: propTypes.bool,
+	id: propTypes.string.isRequired
 }
 
 CalendarComp.defaultProps = {

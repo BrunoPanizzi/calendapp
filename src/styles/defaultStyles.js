@@ -19,7 +19,7 @@ export default {
 	},
 	text: {
 		small: 12,
-		normal: 14,
+		normal: 16,
 		big: 20,
 		huge: 26
 	}
