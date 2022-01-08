@@ -1,18 +1,24 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { StyleSheet, View, Pressable } from 'react-native'
 
 import defaultStyles from '../styles/defaultStyles'
 
-export default function ColorSelection() {
+export default function ColorSelection({ selectedColor, setSelectedColor }) {
+	const colors = [0, 50, 100, 150, 200, 250]
+
 	return (
 		<View style={styles.selection}>
-			<TouchableOpacity style={[styles.ball, {backgroundColor: 'hsla(0, 100%, 50%, 0.5)'}]} />
-			<TouchableOpacity style={[styles.ball, {backgroundColor: 'hsla(50, 100%, 50%, 0.5)'}]} />
-			<TouchableOpacity style={[styles.ball, {backgroundColor: 'hsla(100, 100%, 50%, 0.5)'}]} />
-			<TouchableOpacity style={[styles.ball, {backgroundColor: 'hsla(150, 100%, 50%, 0.5)'}]} />
-			<TouchableOpacity style={[styles.ball, {backgroundColor: 'hsla(200, 100%, 50%, 0.5)'}]} />
-			<TouchableOpacity style={[styles.ball, {backgroundColor: 'hsla(250, 100%, 50%, 0.5)'}]} />
+			{colors.map(color => (
+				<Pressable 
+					key={color}
+					style={[
+						styles.ball,
+						{backgroundColor: `hsla(${color}, 100%, 50%, 0.5)`, borderColor: `hsl(${color}, 75%, 35%)`},
+						color === selectedColor && {borderWidth: 2, transform: [{scale: 1.2}]}
+					]} 
+					onPress={() => setSelectedColor(color)} 
+				/>
+			))}
 		</View>
 	)
 }

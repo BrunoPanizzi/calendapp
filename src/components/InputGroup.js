@@ -24,7 +24,7 @@ InputGroup.defaultProps = {
 
 const styles = StyleSheet.create({
 	container: {
-		marginBottom: defaultStyles.spacing.medium
+		marginBottom: 16
 	},
 	label: {
 		fontSize: 14,
