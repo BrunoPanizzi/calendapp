@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons'
 import propTypes from 'prop-types'
 
 import defaultStyles from '../../styles/defaultStyles'
@@ -16,13 +16,13 @@ export default function Header({ currDate, previousMonth, nextMonth }) {
 		<View>
 			<View style={styles.months}>
 				<TouchableOpacity onPress={previousMonth}>
-					<Ionicons name='chevron-back' {...arrowConfig} />
+					<Entypo name='chevron-left' {...arrowConfig} />
 				</TouchableOpacity>
 
 				<AnimatedMonth currDate={currDate}/>
 
 				<TouchableOpacity onPress={nextMonth}>
-					<Ionicons name='chevron-forward' {...arrowConfig} />
+					<Entypo name='chevron-right' {...arrowConfig} />
 				</TouchableOpacity>
 			</View>
 			<View style={styles.weekDays}>

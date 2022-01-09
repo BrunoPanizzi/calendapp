@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Pressable, Modal } from 'react-native'
 
-import defaultStyles from '../styles/defaultStyles'
-import Button from './Button'
+import parseDate from '../utils/parseDate'
 
-import CalendarComp from './CalendarComp'
+import defaultStyles from '../styles/defaultStyles'
+
 import SelectionCalendar from './SelectionCalendar'
 
 export default function DateSelector() {
@@ -30,16 +30,32 @@ export default function DateSelector() {
 							<SelectionCalendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 						</View>
 
-						<TouchableOpacity onPress={handleModal} style={styles.button}>
-							<Text style={{color: defaultStyles.colors[0], fontSize: defaultStyles.text.normal}}>Cancelar</Text>
-						</TouchableOpacity>
+						<View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
+							<TouchableOpacity onPress={handleModal} style={styles.button}>
+								<Text style={{color: defaultStyles.colors[0], fontSize: defaultStyles.text.normal}}>
+									{selectedDate ? 'Concluído' : 'Cancelar' }
+								</Text>
+							</TouchableOpacity>
+							{
+							selectedDate && 
+							<TouchableOpacity onPress={() => console.log('abrir relogio')} style={styles.button}>
+								<Text style={{color: defaultStyles.colors[0], fontSize: defaultStyles.text.normal}}>
+									Selecionar horário
+								</Text>
+							</TouchableOpacity>
+							}
+						</View>
 
 					</View>
 				</View>
 			</Modal>
 
 			<TouchableOpacity style={styles.container} onPress={handleModal}>
-				<Text>DateSelecto</Text>
+				<Text
+					style={{fontSize: defaultStyles.text.normal, color: selectedDate ? defaultStyles.colors[800] : defaultStyles.colors[200]}}
+				>
+					{selectedDate ? parseDate(selectedDate) : 'dd/mm/aaaa' }
+				</Text>
 			</TouchableOpacity>
 		</>
 	)
@@ -63,6 +79,7 @@ const styles = StyleSheet.create({
 		padding: defaultStyles.spacing.large
 	},
 	modalArea: {
+		width: '100%',
 		padding: defaultStyles.spacing.medium,
 		backgroundColor: defaultStyles.colors[0],
 		borderRadius: defaultStyles.borderRadius
@@ -83,7 +100,7 @@ const styles = StyleSheet.create({
 		borderRadius: defaultStyles.borderRadius,
 		paddingVertical: defaultStyles.spacing.small,
 		paddingHorizontal: defaultStyles.spacing.medium,
-		width: '100%'
+		// width: '100%'
 		
 	}
 })

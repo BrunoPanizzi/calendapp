@@ -4,7 +4,7 @@ import { StyleSheet, View, Pressable } from 'react-native'
 import defaultStyles from '../styles/defaultStyles'
 
 export default function ColorSelection({ selectedColor, setSelectedColor }) {
-	const colors = [0, 50, 100, 150, 200, 250]
+	const colors = [0, 50, 100, 150, 200, 250, 300]
 
 	return (
 		<View style={styles.selection}>
