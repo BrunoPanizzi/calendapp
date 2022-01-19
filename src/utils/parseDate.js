@@ -3,7 +3,7 @@ function fixNumber(n) {
 	return ('0' + n).slice(-2)
 } 
 
-export default function parseDate(date) {
+function parseDate(date) {
 	const myDate = new Date(date)
 
 	const day = fixNumber(myDate.getDate())
@@ -11,4 +11,18 @@ export default function parseDate(date) {
 	const year = myDate.getFullYear()
 	
 	return `${day}/${month}/${year}`
+}
+
+function parseTime(date) {
+	const myDate = new Date(date)
+
+	const hour = fixNumber(myDate.getHours())
+	const min = fixNumber(myDate.getMinutes())
+
+	return `${hour}:${min}`
+}
+
+export {
+	parseDate,
+	parseTime
 }
