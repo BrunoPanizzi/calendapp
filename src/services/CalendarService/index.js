@@ -8,9 +8,16 @@ class CalendarService {
 		return calendars.find(calendar => calendar.id === id)
 	}
 	addEvent(calendarId, eventDetails) {
-		// console.log('adding')
+		console.log('adding')
+		console.log(eventDetails)
+		console.log(calendarId)
 		// calendars[calendars.findIndex(calendar => calendar.id === calendarId)].events.push(eventDetails)
 		// TODO make this thing work
+		const calendar = calendars.find(calendar => calendar.id === calendarId)
+		if (!calendar) return false
+
+		calendar.events.push(eventDetails)
+		
 	}
 	getEventByDate(calendarId, date) {
 		const calendar = calendars.find(calendar => calendar.id === calendarId)

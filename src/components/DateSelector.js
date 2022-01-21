@@ -33,7 +33,7 @@ export default function DateSelector({ date, setDate, placeholder }) {
 		<>
 			{show && 
 				<DateTimePicker
-					value={date}
+					value={date || new Date()}
 					mode={mode}
 					is24Hour={true}
 					onChange={onChange}
