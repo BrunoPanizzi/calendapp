@@ -1,33 +1,33 @@
 export default [
   {
-    title: 'metas asdfjsalkfjklsdjfkdjfk',
+    title: 'metas trabalho',
     id: '123',
     events: [
       {
         title: 'Evento',
-        color: 'hsla(100, 100%, 50%, 0.5)',
+        colorHue: 100,
         type: 'single',
         start: Date.now(),
       },
       {
         title: 'Evento',
-        color: 'hsla(200, 100%, 50%, 0.5)',
+        colorHue: 200,
         type: 'single',
         start: Date.now(),
       },
       {
         title: 'Evento grandao',
-        color: 'hsla(0, 100%, 50%, 0.5)',
+        colorHue: 0,
         type: 'span',
         start: Date.now(),
         end: Date.now() + 3 * 24 * 60 * 60 * 1000
       },
       {
         title: 'Evento grandao',
-        color: 'hsla(250, 100%, 50%, 0.5)',
+        colorHue: 250,
         type: 'span',
-        start: Date.now() - 3 * 24 * 60 * 60 * 1000,
-        end: Date.now() + 1 * 24 * 60 * 60 * 1000
+        start: Date.now() - 6 * 24 * 60 * 60 * 1000,
+        end: Date.now() - 1 * 24 * 60 * 60 * 1000
       }
     ]
   },
@@ -37,7 +37,7 @@ export default [
     events: [
       {
         title: 'Evento',
-        color: 'hsla(100, 100%, 50%, 0.5)',
+        colorHue: 100,
         type: 'single',
         start: Date.now(),
       },
@@ -49,9 +49,9 @@ export default [
     events: [
       {
         title: 'Evento grandao',
-        color: 'hsla(300, 100%, 50%, 0.5)',
+        colorHue: 300,
         type: 'span',
-        start: Date.now() - 3 * 24 * 60 * 60 * 1000,
+        start: Date.now() - 4 * 24 * 60 * 60 * 1000,
         end: Date.now() + 1 * 24 * 60 * 60 * 1000
       }
     ]

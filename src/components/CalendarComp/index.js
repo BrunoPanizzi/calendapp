@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 import propTypes from 'prop-types'
 
@@ -14,26 +14,29 @@ export default function CalendarComp({ compact, id }) {
 
 	const today = new Date()
 	const [month, setMonth] = useState(new Date(today.getFullYear(), today.getMonth()))
-	const calendarStart = new Date(month.valueOf() - month.getDay() * 24 * 60 * 60 * 1000)
 	
-	let daysArr = []
+	const daysArr = useMemo(() => {
+		const calendarStart = new Date(month.valueOf() - month.getDay() * 24 * 60 * 60 * 1000)
+		let assistArr = []
 
-	let assistDate = calendarStart.valueOf()
-	for (let i = 0; i < 42; i++) {
-		let currentDay = new Date(assistDate)
-		let dayObj = 
-			<Day 
-				events={events}
-				key={Math.random()} 
-				delay={i} 
-				day={currentDay}
-				isThisMonth={currentDay.getMonth() === month.getMonth()}
-				fontSize={compact ? 10 : 16}
-			/>
+		let assistDate = calendarStart.valueOf()
+		for (let i = 0; i < 42; i++) {
+			let currentDay = new Date(assistDate)
+			let dayObj = 
+				<Day 
+					events={events}
+					key={Math.random()} 
+					delay={i} 
+					day={currentDay}
+					isThisMonth={currentDay.getMonth() === month.getMonth()}
+					fontSize={compact ? 10 : 16}
+				/>
 
-		daysArr.push(dayObj)
-		assistDate += 24 * 60 * 60 * 1000
-	}
+			assistArr.push(dayObj)
+			assistDate += 24 * 60 * 60 * 1000
+		}
+		return assistArr
+	}, [month])
 
 	const nextMonth = () => {
 		setMonth(prevMonth => new Date(prevMonth.getFullYear(), prevMonth.getMonth() + 1))

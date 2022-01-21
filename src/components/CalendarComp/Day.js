@@ -1,6 +1,8 @@
-import { useRef, useEffect } from 'react'
-import { StyleSheet, Text, View, Animated } from 'react-native'
+import { StyleSheet, Text, View, Pressable } from 'react-native'
+import { useRoute } from '@react-navigation/native'
 import propTypes from 'prop-types'
+
+import { useCalendar } from '../../contexts/CalendarContext'
 
 import isSameDay from '../../utils/isSameDay'
 import isBetweenDates from '../../utils/isBetweenDates'
@@ -9,6 +11,9 @@ import defaultStyles from '../../styles/defaultStyles'
 
 
 export default function Day({ events, day, isThisMonth, fontSize }) {
+	const route = useRoute()
+	const { selectedDay, setSelectedDay } = route.name !== 'Home' && useCalendar()
+	const isSelected = isSameDay(selectedDay, day)
 
 	const eventsThisDay = events.filter(e => e.type === 'single' && isSameDay(e.start, day))
 
@@ -16,7 +21,7 @@ export default function Day({ events, day, isThisMonth, fontSize }) {
 	
 	longEvents = longEvents.map((event) => {
 		let borderStyle
-
+	
 		if (isSameDay(event.start, day)){
 			borderStyle = styles.beginning	
 		} else if (isSameDay(event.end, day)) {
@@ -27,32 +32,55 @@ export default function Day({ events, day, isThisMonth, fontSize }) {
 
 		// add borderStyle to event object, used to style the border of the component 
 		event.borderStyle = borderStyle 
-		
+		event.isEventSelected = isBetweenDates(event.start, event.end, selectedDay)
+			
 		return event
 	})
 	
 	return (
-		<Animated.View 
+		<Pressable
+			disabled={route.name === 'Home'}
 			style={[
-				styles.day, 
+				styles.day,
 				{ width: 100 / 7 + '%', aspectRatio: 1, padding: '2%' },
 			]}
+			onPress={() => setSelectedDay(day)}
 		>
-			<Text style={[styles.text, isThisMonth ? styles.textInMonth : styles.textNotInMonth, {fontSize}]}>
+			<Text 
+				style={[
+					styles.text, 
+					isThisMonth ? styles.textInMonth : styles.textNotInMonth, 
+					isSelected && styles.selectedDay,
+					{fontSize}
+				]}
+			>
 				{day.getDate()}
 			</Text>
 
-			<View style={styles.events}>
-				{eventsThisDay.map(e => <View key={Math.random()} style={{flex: 1, backgroundColor: e?.color}} />)}
+			<View style={[styles.events, isSelected && styles.selectedDay]}>
+				{eventsThisDay.map(e => 
+					<View 
+						key={Math.random()} 
+						style={{
+							flex: 1, 
+							backgroundColor: `hsla(${e?.colorHue}, 100%, 50%, 0.5)`
+						}} 
+					/>
+				)}
 			</View>
 
 			{longEvents.map(e => 
 				<View 
 					key={Math.random()} 
-					style={[ styles.longEvent, {borderColor: e?.color}, e.borderStyle]} 
+					style={[ 
+						styles.longEvent, 
+						e.borderStyle,
+						e.isEventSelected && {transform: [{scaleY: 1.2}]},
+						{borderColor: `hsla(${e?.colorHue}, 100%, 50%, 0.5)`}, 
+					]} 
 				/>
 			)}
-		</Animated.View>
+		</Pressable>
 	)
 }
 
@@ -67,9 +95,13 @@ Day.propTypes = {
 const styles = StyleSheet.create({
 	day: {
 		position: 'relative',
-		marginTop: '1%',  // magic number do not change
+		marginTop: '1%',
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	selectedDay: {
+		transform: [{scale: 1.15}],
+		color: defaultStyles.colors[500]
 	},
 	text: {
 		position: 'absolute',
