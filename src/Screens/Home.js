@@ -1,38 +1,44 @@
 import { useContext } from 'react'
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, FlatList } from 'react-native'
 
 import UserService from '../services/UserService'
+
+import { AuthContext } from '../contexts/AuthContext'
 
 import defaultStyles from '../styles/defaultStyles'
 
 import SmallCalendar from '../components/SmallCalendar'
-
-import { AuthContext } from '../contexts/AuthContext'
+import NewCalendarButton from '../components/NewCalendarButton'
 
 
 export default function Home() {
 	const { width } = Dimensions.get('window')
 	const { handleAuth } = useContext(AuthContext)
 	
-	const calendars = UserService.listCalendars('')
-	
+	let calendars = UserService.listCalendars('').map(item => (
+		<SmallCalendar
+			id={item.id}
+			title={item.title}
+			width={width}
+		/>
+	))
+
+	calendars.push(<NewCalendarButton width={width} />)
+
 	return (
-		<ScrollView style={styles.container}>
-			<View style={styles.calendarsList}>
-				{calendars.map(({ id, title }) => (
-					<SmallCalendar 
-						key={id}
-						id={id}
-						title={title}
-						width={width}
-					/>
-				))}
-			</View>
+		<View style={styles.container}>
+			<FlatList
+				data={calendars}
+				renderItem={({ item }) => item}
+				keyExtractor={() => Math.random()}
+				numColumns={2}
+				contentContainerStyle={{paddingHorizontal: defaultStyles.spacing.medium / 2}}
+			/>
 
 			<TouchableOpacity onPress={handleAuth}>
 				<Text>log out</Text>
 			</TouchableOpacity>
-		</ScrollView>
+		</View>
 	)
 }
 

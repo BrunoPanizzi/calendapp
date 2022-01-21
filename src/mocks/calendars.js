@@ -1,6 +1,6 @@
 export default [
   {
-    title: 'metas trabalho',
+    title: 'metas asdfjsalkfjklsdjfkdjfk',
     id: '123',
     events: [
       {

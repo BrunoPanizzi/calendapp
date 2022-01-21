@@ -8,6 +8,7 @@ import Home from './Screens/Home'
 import Calendar from './Screens/Calendar'
 import Login from './Screens/Login'
 import CreateEvent from './Screens/CreateEvent'
+import NewCalendar from './Screens/NewCalendar'
 
 import { AuthContext } from './contexts/AuthContext'
 
@@ -88,6 +89,11 @@ function MainNavigation() {
         name='Calendar' 
         component={Calendar}
         options={({ route }) => ({title: route.params.title})}
+      />
+      <Stack.Screen 
+        name='New Calendar' 
+        component={NewCalendar}
+        options={{title: 'Novo Calendário'}}
       />
       <Stack.Screen 
         name='CreateEvent' 

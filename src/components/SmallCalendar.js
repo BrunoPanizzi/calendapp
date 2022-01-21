@@ -13,13 +13,13 @@ export default function SmallCalendar({ id, title, width }) {
   
   return (
     <TouchableOpacity
-      style={[styles.calendarContainer, {width: width/2 - 18}]}
+      style={[styles.calendarContainer, {width: width/2 - defaultStyles.spacing.medium * 1.5}]}
       onPress={() => navigation.navigate('Calendar', {id, title})}
     >
       <View style={styles.header}>  
         <Text style={styles.text}>{title}</Text>  
         <Menu
-          button={<FontAwesome5 name='ellipsis-v' size={18} color={defaultStyles.colors[600]} />}
+          button={<FontAwesome5 name='ellipsis-v' size={16} color={defaultStyles.colors[600]} />}
           options={['opçao 1', 'opção2', 'opção 3']}
         />
       </View>
@@ -31,7 +31,8 @@ export default function SmallCalendar({ id, title, width }) {
 const styles = StyleSheet.create({
   calendarContainer: {
 		backgroundColor: defaultStyles.colors[100],
-		marginBottom: 12, 
+		marginBottom: defaultStyles.spacing.medium,
+    marginHorizontal: defaultStyles.spacing.medium / 2,
 		padding: defaultStyles.spacing.medium,
 		borderRadius: defaultStyles.borderRadius,
 	},
@@ -51,3 +52,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
 })
+
+export const container = styles.calendarContainer
