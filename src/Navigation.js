@@ -2,11 +2,12 @@ import { useContext } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import { Animated, Dimensions } from 'react-native'
+import { Animated } from 'react-native'
 
 import Home from './Screens/Home'
 import Calendar from './Screens/Calendar'
 import Login from './Screens/Login'
+import CreateEvent from './Screens/CreateEvent'
 
 import { AuthContext } from './contexts/AuthContext'
 
@@ -33,36 +34,28 @@ const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
       outputRange: [0, 1],
       extrapolate: 'clamp',
     }),
-    next
-      ? next.progress.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1],
-          extrapolate: 'clamp',
-        })
-      : 0
-  );
+    next ? 
+      next.progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+      }): 
+      0
+  )
 
   return {
     cardStyle: {
-      transform: [
-        {
-          translateX: Animated.multiply(
-            progress.interpolate({
-              inputRange: [0, 1, 2],
-              outputRange: [
-                screen.width, // Focused, but offscreen in the beginning
-                0, // Fully focused
-                screen.width * -0.3, // Fully unfocused
-              ],
-              extrapolate: 'clamp',
-            }),
-            inverted
-          ),
-        },
-      ],
+      opacity: progress,
+      transform: [{
+        translateX: Animated.multiply(progress.interpolate({
+          inputRange:  [0, 1, 2],
+          outputRange: [screen.width, 0, screen.width * -0.3],
+          extrapolate: 'clamp',
+        }), inverted),
+      }],
     },
-  };
-};
+  }
+}
 
 function MainNavigation() {  
   return (
@@ -87,8 +80,20 @@ function MainNavigation() {
         cardStyleInterpolator: forSlide
       }}
     >
-      <Stack.Screen name='Home' component={Home} />
-      <Stack.Screen name='Calendar' component={Calendar} />
+      <Stack.Screen 
+        name='Home' 
+        component={Home} 
+      />
+      <Stack.Screen 
+        name='Calendar' 
+        component={Calendar}
+        options={({ route }) => ({title: route.params.title})}
+      />
+      <Stack.Screen 
+        name='CreateEvent' 
+        component={CreateEvent} 
+        options={{title: 'Novo Evento'}} 
+      />
     </Stack.Navigator>
   )
 }

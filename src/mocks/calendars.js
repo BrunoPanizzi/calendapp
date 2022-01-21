@@ -5,26 +5,26 @@ export default [
     events: [
       {
         title: 'Evento',
-        color: '#3ab61188',
+        color: 'hsla(100, 100%, 50%, 0.5)',
         type: 'single',
         start: Date.now(),
       },
       {
         title: 'Evento',
-        color: '#3ab61133',
+        color: 'hsla(200, 100%, 50%, 0.5)',
         type: 'single',
         start: Date.now(),
       },
       {
         title: 'Evento grandao',
-        color: '#3ab6c988',
+        color: 'hsla(0, 100%, 50%, 0.5)',
         type: 'span',
         start: Date.now(),
         end: Date.now() + 3 * 24 * 60 * 60 * 1000
       },
       {
         title: 'Evento grandao',
-        color: '#da56c988',
+        color: 'hsla(250, 100%, 50%, 0.5)',
         type: 'span',
         start: Date.now() - 3 * 24 * 60 * 60 * 1000,
         end: Date.now() + 1 * 24 * 60 * 60 * 1000
@@ -37,7 +37,7 @@ export default [
     events: [
       {
         title: 'Evento',
-        color: '#3ab61188',
+        color: 'hsla(100, 100%, 50%, 0.5)',
         type: 'single',
         start: Date.now(),
       },
@@ -49,7 +49,7 @@ export default [
     events: [
       {
         title: 'Evento grandao',
-        color: '#da56c988',
+        color: 'hsla(300, 100%, 50%, 0.5)',
         type: 'span',
         start: Date.now() - 3 * 24 * 60 * 60 * 1000,
         end: Date.now() + 1 * 24 * 60 * 60 * 1000

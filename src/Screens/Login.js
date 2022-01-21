@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 
 import { AuthContext } from '../contexts/AuthContext'
 
+import Button from '../components/Button'
+
 import Calendapp from '../../assets/Calendapp.png'
 
 import defaultStyles from '../styles/defaultStyles'
@@ -16,9 +18,9 @@ export default function Login() {
       <Text style={styles.subtitle}>
         Um jeito diferente de organizar suas tarefas
       </Text>
-      <TouchableOpacity style={styles.login} onPress={handleAuth}>
+      <Button onPress={handleAuth}>
         <Text style={styles.loginText}>Login</Text>
-      </TouchableOpacity>
+      </Button>
     </View>
   )
 }
@@ -26,7 +28,7 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     alignItems: 'center',
     padding: defaultStyles.spacing.large,
     backgroundColor: defaultStyles.colors[0]
@@ -41,13 +43,6 @@ const styles = StyleSheet.create({
     maxWidth: '70%',
     textAlign: 'center',
     color: defaultStyles.colors[800]
-  },
-  login: {
-    width: '100%',
-    backgroundColor: defaultStyles.colors[600],
-    borderRadius: 999,
-    padding: defaultStyles.spacing.small,
-    alignItems: 'center'
   },
   loginText: {
     fontWeight: 'bold',
