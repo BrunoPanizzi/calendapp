@@ -1,26 +1,53 @@
-import { useContext } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import { useContext, useState } from 'react'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 
 import { AuthContext } from '../contexts/AuthContext'
 
-import Button from '../components/Button'
-
 import Calendapp from '../../assets/Calendapp.png'
-
 import defaultStyles from '../styles/defaultStyles'
+
+import Button from '../components/Button'
+import Input from '../components/Input'
+import InputGroup from '../components/InputGroup'
+
 
 export default function Login() {
   const { handleAuth } = useContext(AuthContext)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  
+  const onSubmit = () => {
+    if (email && password) {
+      handleAuth()
+      return 
+    }
+  }
   
   return (
     <View style={styles.container}>
       <Image source={Calendapp} style={styles.logo} />
-      <Text style={styles.subtitle}>
-        Um jeito diferente de organizar suas tarefas
-      </Text>
-      <Button onPress={handleAuth}>
+      
+      <View style={{width: '100%'}}>
+        <InputGroup label='Email'>
+          <Input 
+            value={email}
+            onChange={setEmail}
+          />
+        </InputGroup>
+        <InputGroup label='Senha'>
+          <Input 
+            value={password}
+            onChange={setPassword}
+          />
+        </InputGroup>
+      </View>
+
+      <Button onPress={onSubmit}>
         <Text style={styles.loginText}>Login</Text>
       </Button>
+      <Pressable onPress={handleAuth}>
+        <Text>dev</Text>
+      </Pressable>
     </View>
   )
 }
