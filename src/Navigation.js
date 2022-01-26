@@ -73,7 +73,7 @@ function MainNavigation() {
         },
         presentation: 'card',
         gestureEnabled: true,
-        gestureResponseDistance: 999,
+        gestureResponseDistance: 100,
         transitionSpec: {
           open: config,
           close: config,

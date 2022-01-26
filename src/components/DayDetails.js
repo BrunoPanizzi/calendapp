@@ -22,7 +22,7 @@ export default function DayDetails() {
   return (
     <>
       <Text style={styles.title}>{selectedDay ? parseDate(selectedDay) : 'Selecione um dia'}</Text>
-      {!!selectedDay && 
+      {false && 
         <FlatList 
           style={styles.info}
           contentContainerStyle={{alignItems: 'stretch'}}
@@ -31,6 +31,13 @@ export default function DayDetails() {
           keyExtractor={() => Math.random()}
           ListEmptyComponent={() => <Text>sem itens</Text>}
         />
+      }
+      {eventsOnDate.length ?
+        <View style={styles.info}>
+          {eventsOnDate.map(item  => <Event {...item} key={Math.random()} />)}
+        </View>
+        :
+        <Text style={styles.noEvents}>Sem eventos...</Text>
       }
     </>
   )
@@ -48,5 +55,10 @@ const styles = StyleSheet.create({
     padding: defaultStyles.spacing.medium,
     paddingVertical: defaultStyles.spacing.medium / 2,
     borderRadius: defaultStyles.borderRadius
+  },
+  noEvents: {
+    margin: defaultStyles.spacing.large,
+    fontSize: defaultStyles.text.huge,
+    color: defaultStyles.colors[700]
   }
 })

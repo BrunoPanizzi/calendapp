@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 
 import CalendarProvider from '../contexts/CalendarContext'
 
@@ -13,18 +13,19 @@ export default function Calendar({ route }) {
 	const { id } = route.params
 
 	return (
-		<View style={styles.container}>
-			<CalendarProvider>
-				<View style={styles.contentContainer}>
-					<CalendarComp id={id} />
-				</View>
-				<View style={styles.contentContainer}>
-					<DayDetails />
-				</View>
-
-				<NewEventButton calendarId={id} />
-			</CalendarProvider>
-		</View>
+		<>
+			<ScrollView style={styles.container} contentContainerStyle={{padding: defaultStyles.spacing.medium}}>
+				<CalendarProvider>
+					<View style={[styles.contentContainer, {marginBottom: defaultStyles.spacing.medium}]}>
+						<CalendarComp id={id} />
+					</View>
+					<View style={styles.contentContainer}>
+						<DayDetails />
+					</View>
+				</CalendarProvider>
+			</ScrollView>
+			<NewEventButton calendarId={id} />
+		</>
 	)
 }
 
@@ -32,15 +33,13 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: defaultStyles.colors[0],
 		flex: 1,
-		alignItems: 'center',
-		padding: defaultStyles.spacing.medium
+		// padding: defaultStyles.spacing.medium
 	},
 	contentContainer: {
 		width: '100%',
 		alignItems: 'center',
 		backgroundColor: defaultStyles.colors[100],
 		padding: defaultStyles.spacing.medium,
-		marginBottom: defaultStyles.spacing.medium,
 		borderRadius: defaultStyles.borderRadius
 	}
 })
