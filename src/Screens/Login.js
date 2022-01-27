@@ -1,6 +1,8 @@
 import { useContext, useState } from 'react'
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 
+import UserService from '../services/UserService'
+
 import { AuthContext } from '../contexts/AuthContext'
 
 import Calendapp from '../../assets/Calendapp.png'
@@ -12,14 +14,22 @@ import InputGroup from '../components/InputGroup'
 
 
 export default function Login() {
-  const { handleAuth } = useContext(AuthContext)
+  const { setAuth } = useContext(AuthContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   
-  const onSubmit = () => {
-    if (email && password) {
-      handleAuth()
-      return 
+  const handleCreateAccount = async () => {
+    const user = await UserService.createUser(email, password)
+    if (user) {
+      setAuth(user)
+    }
+  }
+
+  const handleLogin = async () => {
+    const user = await UserService.login(email, password)
+
+    if (user) {
+      setAuth(user)
     }
   }
   
@@ -42,10 +52,14 @@ export default function Login() {
         </InputGroup>
       </View>
 
-      <Button onPress={onSubmit}>
+      <Button onPress={handleLogin}>
         <Text style={styles.loginText}>Login</Text>
       </Button>
-      <Pressable onPress={handleAuth}>
+      <Button onPress={handleCreateAccount}>
+        <Text style={styles.loginText}>Criar conta</Text>
+      </Button>
+
+      <Pressable onPress={() => setAuth(true)}>
         <Text>dev</Text>
       </Pressable>
     </View>

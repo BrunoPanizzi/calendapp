@@ -13,7 +13,7 @@ import NewCalendarButton from '../components/NewCalendarButton'
 
 export default function Home() {
 	const { width } = Dimensions.get('window')
-	const { handleAuth } = useContext(AuthContext)
+	const { setAuth } = useContext(AuthContext)
 	
 	let calendars = UserService.listCalendars('').map(item => (
 		<SmallCalendar
@@ -35,7 +35,7 @@ export default function Home() {
 				contentContainerStyle={{paddingHorizontal: defaultStyles.spacing.medium / 2}}
 			/>
 
-			<TouchableOpacity onPress={handleAuth}>
+			<TouchableOpacity onPress={() => setAuth(false)}>
 				<Text>log out</Text>
 			</TouchableOpacity>
 		</View>
