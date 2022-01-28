@@ -10,30 +10,12 @@ class UserService {
 		]
 	}
 
-	async login(email, password) {
-		let user
-
-		try {
-			const userCredential = await signInWithEmailAndPassword(auth, email, password)
-			user = userCredential.user
-		} catch (error) {
-			console.log(error)			
-		}
-    
-		return user
+	login(email, password) {
+		return signInWithEmailAndPassword(auth, email, password)
 	}
 
-	async createUser(email, password) {
-		let user
-
-		try {
-			const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-			user = userCredential.user
-		} catch (error) {
-			console.log(error)			
-		}
-    
-		return user
+	createUser(email, password) {
+		return createUserWithEmailAndPassword(auth, email, password)
 	}
 
 	signOut() {

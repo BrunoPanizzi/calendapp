@@ -3,7 +3,7 @@ import propTypes from 'prop-types'
 
 import defaultStyles from '../styles/defaultStyles'
 
-export default function Input({ value, onChange, placeholder, multiline }) {
+export default function Input({ value, onChange, placeholder, multiline, passwordVisible }) {
 	return (
 		<TextInput 
 			style={styles.input} 
@@ -12,6 +12,7 @@ export default function Input({ value, onChange, placeholder, multiline }) {
 			onChangeText={onChange}
 			multiline={multiline}
 			placeholder={placeholder}
+			secureTextEntry={passwordVisible}
 		/>
 	)
 }
@@ -20,7 +21,8 @@ Input.propTypes = {
 	value: propTypes.string.isRequired,
 	onChange: propTypes.func.isRequired,
 	placeholder: propTypes.string,
-	multiline: propTypes.bool
+	multiline: propTypes.bool,
+	passwordVisible: propTypes.bool
 }
 
 const styles = StyleSheet.create({
@@ -28,8 +30,6 @@ const styles = StyleSheet.create({
 		width: '100%',
 		backgroundColor: defaultStyles.colors[0],
 		borderRadius: defaultStyles.borderRadius,
-		borderWidth: 2,
-		borderColor: defaultStyles.colors[500],
 		padding: defaultStyles.spacing.small,
 		fontSize: defaultStyles.text.normal
 	}

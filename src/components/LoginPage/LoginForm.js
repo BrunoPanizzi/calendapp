@@ -6,9 +6,12 @@ import UserService from '../../services/UserService'
 
 import { AuthContext } from '../../contexts/AuthContext'
 
+import useErrors from '../../hooks/useErrors'
+
 import defaultStyles from '../../styles/defaultStyles'
 
 import Input from '../Input'
+import PasswordInput from '../PasswordInput'
 import InputGroup from '../InputGroup'
 import Button from '../Button'
 
@@ -18,27 +21,67 @@ export default function LoginForm({ mode }) {
 	
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	
+
+	const {addError, getErrorMessageByField, removeError} = useErrors()
+
+	const handleEmail = value => {
+		setEmail(value)
+		
+		removeError('email')
+	}
+
+	const handlePassword = value => {
+		setPassword(value)
+
+		removeError('password')
+	}
+
 	const handleSubmit = async () => {
+		if (!email) {
+			addError({field: 'email', message: 'Email incorreto'})
+			return
+		} if (!password) {
+			addError({field: 'password', message: 'Senha incorreta'})
+			return	
+		}
+		
 		const method = mode === 'login' ? UserService.login : UserService.createUser
+		
+		try {
+			const userCredential = await method(email, password)
+			const user = userCredential.user
+			setAuth(user)
 
-		const user = await method(email, password)
+		} catch (err) {
+			console.log(err.message)
+			addError({field: 'email', message: 'Email incorreto'})
+			addError({field: 'password', message: 'Senha incorreta'})
+		}
 
-		if (user) setAuth(user)
 	}
 	
 	return (
 		<View style={styles.container}>
-			<InputGroup label='Email'>
-				<Input 
+			<InputGroup 
+				label='Email'
+				error={!!getErrorMessageByField('email')}
+				errorMessage={getErrorMessageByField('email')}
+			>
+				<Input
 					value={email}
-					onChange={setEmail}
+					onChange={handleEmail}
+					error={!!getErrorMessageByField('email')}
 				/>
 			</InputGroup>
-			<InputGroup label='Senha'>
-				<Input 
+			<InputGroup
+				label='Senha'
+				error={!!getErrorMessageByField('password')}
+				errorMessage={getErrorMessageByField('password')}
+			>
+				<PasswordInput
 					value={password}
-					onChange={setPassword}
+					onChange={handlePassword}
+					error={!!getErrorMessageByField('password')}
 				/>
 			</InputGroup>
 			{mode === 'login' && <Text style={styles.forgotPassword}>Esqueceu sua senha?</Text>}
