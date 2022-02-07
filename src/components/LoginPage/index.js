@@ -1,32 +1,72 @@
-import { useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { useState, useRef } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Animated } from 'react-native'
 
 import defaultStyles from '../../styles/defaultStyles'
 
-import LoginForm from './LoginForm'
+import Form from './Form'
 
 export default function MainLoginContent() {
-	const [selectedMode, setSelectedMode] = useState('login')
+	const [width, setWidth] = useState(0)
+	const selectionRef = useRef()
+	const selectorAnimation = useRef(new Animated.Value(0)).current
+	
+	const scrollSelector = pos => {
+		Animated.timing(selectorAnimation, {
+			duration: 350,
+			useNativeDriver: true,
+			toValue: pos
+		}).start()
+	}
+	
+	const scrollToPosition = pos => {
+		const selectorPos = pos === 0 ? pos / 2 : pos / 2 - defaultStyles.spacing.medium
+		scrollSelector(selectorPos)
+		selectionRef.current.scrollTo({
+			x: pos,
+			animated: true,
+		})
+	}
 	
 	return (
-		<View style={styles.container}>
+		<View 
+			style={styles.container}
+			onLayout={e => setWidth(e.nativeEvent.layout.width)}
+		>
 			<View style={styles.navBar}>
+				<Animated.View 
+					style={[
+						styles.selector, 
+						{transform: [{translateX: selectorAnimation}]}]}
+				/>
 				<TouchableOpacity 
 					style={styles.textContainer}
-					onPress={() => setSelectedMode('login')}
+					onPress={() => scrollToPosition(0)}
 				>
 					<Text style={styles.text}>Login</Text>
 				</TouchableOpacity>
 			
 				<TouchableOpacity 
 					style={styles.textContainer}
-					onPress={() => setSelectedMode('signUp')}
+					onPress={() => scrollToPosition(width + defaultStyles.spacing.medium * 2)}
 				>
 					<Text style={styles.text}>Criar conta</Text>
 				</TouchableOpacity>
 			</View>
 
-			<LoginForm mode={selectedMode} />
+			<ScrollView 
+				horizontal={true}
+				showsHorizontalScrollIndicator={false}
+				scrollEnabled={false}
+				ref={selectionRef}
+			>
+				<View style={{width, marginRight: defaultStyles.spacing.medium}}>
+					<Form mode='login'/>
+				</View>
+				<View style={{width, marginLeft: defaultStyles.spacing.medium}}>
+					<Form mode='signUp'/>
+				</View>
+			</ScrollView>
+		
 		</View>
 	)
 }
@@ -34,6 +74,7 @@ export default function MainLoginContent() {
 const styles = StyleSheet.create({
 	container: {
 		width: '100%',
+		// marginBottom: defaultStyles.spacing.large * 3
 	},
 	navBar: {
 		backgroundColor: defaultStyles.colors[100],
@@ -42,6 +83,16 @@ const styles = StyleSheet.create({
 		marginBottom: defaultStyles.spacing.medium,
 		flexDirection: 'row',
 		justifyContent: 'space-around'
+	},
+	selector: {
+		position: 'absolute',
+		width: '50%',
+		top: 0,
+		bottom: 0,
+		borderRadius: defaultStyles.borderRadius,
+		borderWidth: 3,
+		borderColor: defaultStyles.colors[500],
+		
 	},
 	textContainer: {
 		flex: 1,

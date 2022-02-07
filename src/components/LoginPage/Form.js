@@ -2,6 +2,8 @@ import { useState, useContext } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import propTypes from 'prop-types'
 
+import isEmailValid from '../../utils/isEmailValid'
+
 import UserService from '../../services/UserService'
 
 import { AuthContext } from '../../contexts/AuthContext'
@@ -16,7 +18,7 @@ import InputGroup from '../InputGroup'
 import Button from '../Button'
 
 
-export default function LoginForm({ mode }) {
+export default function Form({ mode }) {
 	const { setAuth } = useContext(AuthContext)
 	
 	const [email, setEmail] = useState('')
@@ -26,7 +28,9 @@ export default function LoginForm({ mode }) {
 
 	const handleEmail = value => {
 		setEmail(value)
-		
+		if (!isEmailValid(email)) {
+			addError({field: 'email', message: 'Formato de email inválido'})
+		}
 		removeError('email')
 	}
 
@@ -94,13 +98,13 @@ export default function LoginForm({ mode }) {
 	)
 }
 
-LoginForm.propTypes = {
+Form.propTypes = {
 	mode: propTypes.oneOf(['login', 'signUp']).isRequired
 }
 
 const styles = StyleSheet.create({
 	container: {
-		alignItems: 'flex-end'
+		alignItems: 'flex-end',
 	},
 	buttonLabel: {
 		fontWeight: 'bold',

@@ -1,5 +1,5 @@
-import { useContext } from 'react'
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
+import { useContext, useEffect, useRef } from 'react'
+import { StyleSheet, Text, View, Image, Pressable, Animated } from 'react-native'
 
 import { AuthContext } from '../contexts/AuthContext'
 
@@ -11,16 +11,39 @@ import MainLoginContent from '../components/LoginPage'
 
 export default function Login() {
   const { setAuth } = useContext(AuthContext)
+  const opacity = useRef(new Animated.Value(0)).current
 
+  useEffect(() => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true
+    }).start()
+  }, [])
+
+  
   return (
-    <View style={styles.container}>
-      <Image source={Calendapp} style={styles.logo} />
-      
-      <MainLoginContent />
-
-      <Pressable onPress={() => setAuth(true)}>
-        <Text>dev</Text>
-      </Pressable>
+    <View style={{flex: 1, backgroundColor: defaultStyles.colors[0]}}>
+      <Animated.View 
+        style={[
+          styles.container, 
+          {
+            opacity,
+            transform: [{translateY: opacity.interpolate({
+              inputRange:  [0, 1], 
+              outputRange: [100, 0]})}]
+          }
+        ]}
+      >
+        <View>
+          <Image source={Calendapp} style={styles.logo} />
+        
+          <MainLoginContent />
+        </View>
+        <Pressable onPress={() => setAuth(true)}>
+          <Text>texto do rodapé</Text>
+        </Pressable>
+      </Animated.View>
     </View>
   )
 }
@@ -28,13 +51,14 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: defaultStyles.spacing.large,
-    backgroundColor: defaultStyles.colors[0]
+    paddingBottom: defaultStyles.spacing.small,
   },
   logo: {
     width: '100%',
+    marginTop: defaultStyles.spacing.large * 2,
+    marginBottom: defaultStyles.spacing.large * 3,
     resizeMode: 'contain'
   },
 
