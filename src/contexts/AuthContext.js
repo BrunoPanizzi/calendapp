@@ -5,12 +5,10 @@ export const AuthContext = createContext()
 export default function AuthProvider({ children }) {
   const [auth, setAuth] = useState(false)
 
-  const handleAuth = () => setAuth(prevAuth => !prevAuth)
-  
   return (
     <AuthContext.Provider value={{
       auth,
-      handleAuth
+      setAuth
     }}>
       {children}
     </AuthContext.Provider>

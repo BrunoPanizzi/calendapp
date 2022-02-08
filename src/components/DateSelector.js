@@ -63,8 +63,6 @@ const styles = StyleSheet.create({
 		width: '100%',
 		backgroundColor: defaultStyles.colors[0],
 		borderRadius: defaultStyles.borderRadius,
-		borderWidth: 2,
-		borderColor: defaultStyles.colors[500],
 		padding: defaultStyles.spacing.small,
 		flexDirection: 'row',
 		justifyContent: 'space-between'

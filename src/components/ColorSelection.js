@@ -26,8 +26,6 @@ export default function ColorSelection({ selectedColor, setSelectedColor }) {
 const styles = StyleSheet.create({
 	selection: {
 		borderRadius: defaultStyles.borderRadius,
-		borderWidth: 2,
-		borderColor: defaultStyles.colors[500],
 		paddingVertical: defaultStyles.spacing.small,
 		flexDirection: 'row',
 		justifyContent: 'space-around'
