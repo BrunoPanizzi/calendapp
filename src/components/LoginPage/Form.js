@@ -53,9 +53,9 @@ export default function Form({ mode }) {
 		
 		try {
 			const userCredential = await method(email, password)
-			const user = userCredential.user
-			setAuth(user)
 
+			console.log(`user logged in\n ${userCredential}` )
+			
 		} catch (err) {
 			console.log(err.message)
 			addError({field: 'email', message: 'Email incorreto'})

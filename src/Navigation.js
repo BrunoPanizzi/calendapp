@@ -105,11 +105,11 @@ function MainNavigation() {
 }
 
 export default function Navigation() {
-  const { auth } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   
   return (
     <NavigationContainer>
-      {auth ? 
+      {user ? 
         <MainNavigation /> : 
         <Login /> 
       }

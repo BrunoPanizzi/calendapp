@@ -23,16 +23,21 @@ export default function CreateEvent() {
 	const [end, setEnd] = useState()
 	const [color, setColor] = useState('')
 	
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		console.log({eventName, description, start, end, color})
-		CalendarService.addEvent(route.params, {
-			title: eventName, 
-			colorHue: color,
-			description, 
-			type: isSameDay(start, end) || !end ? 'single' : 'span',
-			start: start?.valueOf(), 
-			end: end?.valueOf(), 
-		})
+
+		try {
+			await CalendarService.addEvent(route.params, {
+				title: eventName, 
+				colorHue: color,
+				description, 
+				type: isSameDay(start, end) || !end ? 'single' : 'span',
+				start: start?.valueOf(), 
+				end: end?.valueOf(), 
+			})
+		} catch (e) {
+			console.log(e)
+		}
 	}
 	
 	// TODO add error messages

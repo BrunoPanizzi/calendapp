@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { auth } from '../../../firebase'
+import { Auth } from '../../../firebase'
 
 class UserService {
 	listCalendars(user) {
@@ -11,15 +11,15 @@ class UserService {
 	}
 
 	login(email, password) {
-		return signInWithEmailAndPassword(auth, email, password)
+		return signInWithEmailAndPassword(Auth, email, password)
 	}
 
 	createUser(email, password) {
-		return createUserWithEmailAndPassword(auth, email, password)
+		return createUserWithEmailAndPassword(Auth, email, password)
 	}
 
 	signOut() {
-		signOut(auth)
+		signOut(Auth)
 	}
 }
 

@@ -10,14 +10,14 @@ import DayDetails from '../components/DayDetails'
 
 
 export default function Calendar({ route }) {
-	const { id } = route.params
+	const { id, calendar } = route.params
 
 	return (
 		<>
 			<ScrollView style={styles.container} contentContainerStyle={{padding: defaultStyles.spacing.medium}}>
 				<CalendarProvider>
 					<View style={[styles.contentContainer, {marginBottom: defaultStyles.spacing.medium}]}>
-						<CalendarComp id={id} />
+						<CalendarComp calendar={calendar} />
 					</View>
 					<View style={styles.contentContainer}>
 						<DayDetails />

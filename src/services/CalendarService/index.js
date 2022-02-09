@@ -1,24 +1,43 @@
+import { 
+	collection,
+	query,
+	where,
+	addDoc,
+	getDocs,
+	doc,
+	updateDoc,
+	arrayUnion,
+	arrayRemove 
+} from 'firebase/firestore'
+
+import { db, Auth } from '../../../firebase'
+
 import calendars from '../../mocks/calendars'
 
 import isSameDay from '../../utils/isSameDay'
 import isBetweenDates from '../../utils/isBetweenDates'
 
 class CalendarService {
-	getInfo(id) {
-		return calendars.find(calendar => calendar.id === id)
+	async addCalendar({ title, isPublic }) {
+		return addDoc(collection(db, 'calendars'), {
+			title,
+			isPublic,
+			creator: Auth.currentUser.uid
+		})
 	}
-	addEvent(calendarId, eventDetails) {
-		console.log('adding')
-		console.log(eventDetails)
-		console.log(calendarId)
-		// calendars[calendars.findIndex(calendar => calendar.id === calendarId)].events.push(eventDetails)
-		// TODO make this thing work
-		const calendar = calendars.find(calendar => calendar.id === calendarId)
-		if (!calendar) return false
 
-		calendar.events.push(eventDetails)
-		
+	getCalendars(uid) {
+		return getDocs(query(collection(db, 'calendars'), where('creator', '==', uid)))
 	}
+
+	addEvent(calendarId, eventDetails) {
+		const calendarRef = doc(db, `calendars/${calendarId}`)
+		console.log(calendarRef.id)
+		return updateDoc(calendarRef, {
+			events: arrayUnion(eventDetails)
+		})
+	}
+
 	getEventByDate(calendarId, date) {
 		const calendar = calendars.find(calendar => calendar.id === calendarId)
 		if (!calendar) return false

@@ -1,9 +1,10 @@
-import { useContext } from 'react'
+import { useEffect, useState } from 'react'
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, FlatList } from 'react-native'
 
-import UserService from '../services/UserService'
+import { Auth } from '../../firebase'
 
-import { AuthContext } from '../contexts/AuthContext'
+import UserService from '../services/UserService'
+import CalendarService from '../services/CalendarService'
 
 import defaultStyles from '../styles/defaultStyles'
 
@@ -12,18 +13,38 @@ import NewCalendarButton from '../components/NewCalendarButton'
 
 
 export default function Home() {
+	console.log('home rendered')
 	const { width } = Dimensions.get('window')
-	const { setAuth } = useContext(AuthContext)
 	
-	let calendars = UserService.listCalendars('').map(item => (
-		<SmallCalendar
-			id={item.id}
-			title={item.title}
-			width={width}
-		/>
-	))
+	const [calendars, setCalendars] = useState([])
+	
+	async function get() {
+		try {
+			// gets calendars
+			const calendarsQuery = await CalendarService.getCalendars(Auth.currentUser.uid)
+			
+			let calendarsComponents = calendarsQuery.docs.map(calendar => (
+				<SmallCalendar
+					calendar={calendar.data()}
+					id={calendar.id}
+					width={width}
+				/>
+			))
 
-	calendars.push(<NewCalendarButton width={width} />)
+			// adds new calendar button to the end
+			calendarsComponents.push(<NewCalendarButton width={width} />)
+			setCalendars(calendarsComponents)
+			
+		} catch (e) {	
+			console.log(e)
+		}
+	}
+	
+	useEffect(() => {
+		get()
+	}, [])
+	
+	
 
 	return (
 		<View style={styles.container}>
@@ -33,9 +54,11 @@ export default function Home() {
 				keyExtractor={() => Math.random()}
 				numColumns={2}
 				contentContainerStyle={{paddingHorizontal: defaultStyles.spacing.medium / 2}}
+				onRefresh={get}
+				refreshing={false}
 			/>
 
-			<TouchableOpacity onPress={() => setAuth(false)}>
+			<TouchableOpacity onPress={async () => await Auth.signOut()}>
 				<Text>log out</Text>
 			</TouchableOpacity>
 		</View>

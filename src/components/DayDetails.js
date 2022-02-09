@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, FlatList } from 'react-native'
 import { useRoute } from '@react-navigation/native'
 
 import { parseDate } from '../utils/parseDate'
-import CalendarService from '../services/CalendarService'
 
 import { useCalendar } from '../contexts/CalendarContext'
 
@@ -17,7 +16,7 @@ export default function DayDetails() {
   
   const { selectedDay } = useCalendar()
   
-  const eventsOnDate = CalendarService.getEventByDate(id, selectedDay)
+  const eventsOnDate = []
   
   return (
     <>
