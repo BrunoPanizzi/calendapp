@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { StyleSheet, View, Text, Dimensions, TouchableOpacity, FlatList } from 'react-native'
+import { onSnapshot } from 'firebase/firestore'
 
 import { Auth } from '../../firebase'
 
@@ -13,51 +14,36 @@ import NewCalendarButton from '../components/NewCalendarButton'
 
 
 export default function Home() {
-	console.log('home rendered')
 	const { width } = Dimensions.get('window')
 	
 	const [calendars, setCalendars] = useState([])
-	
-	async function get() {
-		try {
-			// gets calendars
-			const calendarsQuery = await CalendarService.getCalendars(Auth.currentUser.uid)
-			
-			let calendarsComponents = calendarsQuery.docs.map(calendar => (
-				<SmallCalendar
-					calendar={calendar.data()}
-					id={calendar.id}
-					width={width}
-				/>
-			))
-
-			// adds new calendar button to the end
-			calendarsComponents.push(<NewCalendarButton width={width} />)
-			setCalendars(calendarsComponents)
-			
-		} catch (e) {	
-			console.log(e)
-		}
-	}
-	
+		
 	useEffect(() => {
-		get()
+		const calendarsQuery = CalendarService.getCalendars(Auth.currentUser.uid)
+		const unsub = onSnapshot(calendarsQuery, (querySnapshot) => {
+			setCalendars(querySnapshot.docs)
+		})
+
+		return unsub
 	}, [])
 	
-	
-
 	return (
 		<View style={styles.container}>
 			<FlatList
 				data={calendars}
-				renderItem={({ item }) => item}
+				renderItem={({ item }) => 
+					<SmallCalendar
+						calendar={item.data()}
+						id={item.id}
+						width={width}
+					/>
+				}
 				keyExtractor={() => Math.random()}
 				numColumns={2}
 				contentContainerStyle={{paddingHorizontal: defaultStyles.spacing.medium / 2}}
-				onRefresh={get}
-				refreshing={false}
 			/>
 
+			<NewCalendarButton width={width} />
 			<TouchableOpacity onPress={async () => await Auth.signOut()}>
 				<Text>log out</Text>
 			</TouchableOpacity>

@@ -22,12 +22,13 @@ class CalendarService {
 		return addDoc(collection(db, 'calendars'), {
 			title,
 			isPublic,
+			events: [],
 			creator: Auth.currentUser.uid
 		})
 	}
 
 	getCalendars(uid) {
-		return getDocs(query(collection(db, 'calendars'), where('creator', '==', uid)))
+		return query(collection(db, 'calendars'), where('creator', '==', uid))
 	}
 
 	addEvent(calendarId, eventDetails) {

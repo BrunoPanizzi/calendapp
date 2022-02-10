@@ -33,7 +33,7 @@ export default function CreateEvent() {
 				description, 
 				type: isSameDay(start, end) || !end ? 'single' : 'span',
 				start: start?.valueOf(), 
-				end: end?.valueOf(), 
+				end: end ? end.valueOf() : null, // firestore things, it doesn't understand `undefined`, just `null` 
 			})
 		} catch (e) {
 			console.log(e)

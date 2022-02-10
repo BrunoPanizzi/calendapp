@@ -22,7 +22,7 @@ export default function NewCalendar() {
     if (!title) return 
 
     try {
-      const calendarRef = await CalendarService.addCalendar({title, isPublic, events: []})
+      const calendarRef = await CalendarService.addCalendar({title, isPublic})
 
     } catch (e) {
       console.log(e)
