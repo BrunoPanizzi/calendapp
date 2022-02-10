@@ -31,6 +31,10 @@ class CalendarService {
 		return query(collection(db, 'calendars'), where('creator', '==', uid))
 	}
 
+	getCalendar(id) {
+		return doc(db, `calendars/${id}`)
+	}
+	
 	addEvent(calendarId, eventDetails) {
 		const calendarRef = doc(db, `calendars/${calendarId}`)
 		console.log(calendarRef.id)

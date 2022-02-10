@@ -32,7 +32,7 @@ export default function CalendarComp({ compact, calendar }) {
 			assistDate += 24 * 60 * 60 * 1000
 		}
 		return assistArr
-	}, [month])
+	}, [month, calendar])
 
 	const nextMonth = () => {
 		setMonth(prevMonth => new Date(prevMonth.getFullYear(), prevMonth.getMonth() + 1))

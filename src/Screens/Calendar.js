@@ -1,6 +1,10 @@
+import { useState, useEffect } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
+import { onSnapshot } from 'firebase/firestore'
 
 import CalendarProvider from '../contexts/CalendarContext'
+
+import CalendarService from '../services/CalendarService'
 
 import defaultStyles from '../styles/defaultStyles'
 
@@ -11,13 +15,23 @@ import DayDetails from '../components/DayDetails'
 
 export default function Calendar({ route }) {
 	const { id, calendar } = route.params
+	const [calendarInfo, setCalendarInfo] = useState(calendar)
 
+	useEffect(() => {
+		const calendarRef = CalendarService.getCalendar(id)
+		const unsub = onSnapshot(calendarRef, calendarData => {
+			setCalendarInfo(calendarData.data())
+		})
+
+		return unsub
+	}, [])
+	
 	return (
 		<>
 			<ScrollView style={styles.container} contentContainerStyle={{padding: defaultStyles.spacing.medium}}>
 				<CalendarProvider>
 					<View style={[styles.contentContainer, {marginBottom: defaultStyles.spacing.medium}]}>
-						<CalendarComp calendar={calendar} />
+						<CalendarComp calendar={calendarInfo} />
 					</View>
 					<View style={styles.contentContainer}>
 						<DayDetails />

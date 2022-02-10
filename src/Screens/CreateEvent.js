@@ -14,7 +14,7 @@ import DateSelector from '../components/DateSelector'
 import ColorSelection from '../components/ColorSelection'
 import Button from '../components/Button'
 
-export default function CreateEvent() {
+export default function CreateEvent({ navigation }) {
 	const route = useRoute()
 	
 	const [eventName, setEventName] = useState('')
@@ -24,8 +24,6 @@ export default function CreateEvent() {
 	const [color, setColor] = useState('')
 	
 	const handleSubmit = async () => {
-		console.log({eventName, description, start, end, color})
-
 		try {
 			await CalendarService.addEvent(route.params, {
 				title: eventName, 
@@ -35,6 +33,7 @@ export default function CreateEvent() {
 				start: start?.valueOf(), 
 				end: end ? end.valueOf() : null, // firestore things, it doesn't understand `undefined`, just `null` 
 			})
+			navigation.goBack()
 		} catch (e) {
 			console.log(e)
 		}

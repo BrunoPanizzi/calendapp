@@ -11,7 +11,7 @@ import CalendarComp from '../components/CalendarComp'
 
 export default function SmallCalendar({ calendar, id, width }) {
   const navigation = useNavigation()
-
+    
   return (
     <TouchableOpacity
       style={[styles.calendarContainer, {width: width/2 - defaultStyles.spacing.medium * 1.5}]}
@@ -31,9 +31,7 @@ export default function SmallCalendar({ calendar, id, width }) {
 
 SmallCalendar.propTypes = {
   calendar: propTypes.shape({
-    id: propTypes.string,
     title: propTypes.string,
-    
   }).isRequired,
   id: propTypes.string.isRequired,
   width: propTypes.number.isRequired

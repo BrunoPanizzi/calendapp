@@ -14,7 +14,7 @@ import Button from '../components/Button'
 import Toggle from '../components/Toggle'
 
 
-export default function NewCalendar() {
+export default function NewCalendar({ navigation }) {
   const [title, setTitle] = useState('')
   const [isPublic, toggleisPublic] = useToggle()
   
@@ -23,7 +23,7 @@ export default function NewCalendar() {
 
     try {
       const calendarRef = await CalendarService.addCalendar({title, isPublic})
-
+      navigation.goBack()
     } catch (e) {
       console.log(e)
     }
