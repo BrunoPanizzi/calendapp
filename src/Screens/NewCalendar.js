@@ -15,17 +15,20 @@ import Toggle from '../components/Toggle'
 
 
 export default function NewCalendar({ navigation }) {
+  const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState('')
   const [isPublic, toggleisPublic] = useToggle()
   
   const handleSubmit = async () => {
     if (!title) return 
-
+    setLoading(true)
     try {
       const calendarRef = await CalendarService.addCalendar({title, isPublic})
       navigation.goBack()
     } catch (e) {
       console.log(e)
+    } finally {
+      setLoading(false)
     }
   }
   
@@ -45,7 +48,7 @@ export default function NewCalendar({ navigation }) {
         />
       </ToggleGroup>
 
-      <Button onPress={handleSubmit}>
+      <Button onPress={handleSubmit} loading={loading} >
         <Text style={styles.buttonText}>Criar calendário</Text>
       </Button>
     </View>

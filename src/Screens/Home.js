@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, FlatList } from 'react-native'
+import { 
+	StyleSheet, 
+	View, 
+	Text, 
+	Dimensions, 
+	TouchableOpacity, 
+	FlatList, 
+	ActivityIndicator 
+} from 'react-native'
+
 import { onSnapshot } from 'firebase/firestore'
 
 import { Auth } from '../../firebase'
 
-import UserService from '../services/UserService'
 import CalendarService from '../services/CalendarService'
 
 import defaultStyles from '../styles/defaultStyles'
@@ -17,11 +25,13 @@ export default function Home() {
 	const { width } = Dimensions.get('window')
 	
 	const [calendars, setCalendars] = useState([])
+	const [loading, setLoading] = useState(true)
 		
 	useEffect(() => {
 		const calendarsQuery = CalendarService.getCalendars(Auth.currentUser.uid)
 		const unsub = onSnapshot(calendarsQuery, (querySnapshot) => {
 			setCalendars(querySnapshot.docs)
+			setLoading(false)
 		})
 
 		return unsub
@@ -29,19 +39,22 @@ export default function Home() {
 	
 	return (
 		<View style={styles.container}>
-			<FlatList
-				data={calendars}
-				renderItem={({ item }) => 
-					<SmallCalendar
-						calendar={item.data()}
-						id={item.id}
-						width={width}
-					/>
-				}
-				keyExtractor={() => Math.random()}
-				numColumns={2}
-				contentContainerStyle={{paddingHorizontal: defaultStyles.spacing.medium / 2}}
-			/>
+			{loading ? 
+				<ActivityIndicator size='large' color={defaultStyles.colors[500]} /> :
+				<FlatList
+					data={calendars}
+					renderItem={({ item }) => 
+						<SmallCalendar
+							calendar={item.data()}
+							id={item.id}
+							width={width}
+						/>
+					}
+					keyExtractor={() => Math.random()}
+					numColumns={2}
+					contentContainerStyle={{paddingHorizontal: defaultStyles.spacing.medium / 2}}
+				/>
+			}
 
 			<NewCalendarButton width={width} />
 			<TouchableOpacity onPress={async () => await Auth.signOut()}>

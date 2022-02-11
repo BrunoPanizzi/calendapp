@@ -21,6 +21,7 @@ import Button from '../Button'
 export default function Form({ mode }) {
 	const { setAuth } = useContext(AuthContext)
 	
+	const [loading, setLoading] = useState(false)
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 
@@ -52,6 +53,7 @@ export default function Form({ mode }) {
 		const method = mode === 'login' ? UserService.login : UserService.createUser
 		
 		try {
+			setLoading(true)
 			const userCredential = await method(email, password)
 
 			console.log(`user logged in\n ${userCredential}` )
@@ -60,6 +62,8 @@ export default function Form({ mode }) {
 			console.log(err.message)
 			addError({field: 'email', message: 'Email incorreto'})
 			addError({field: 'password', message: 'Senha incorreta'})
+		} finally {
+			setLoading(false)
 		}
 
 	}
@@ -89,7 +93,7 @@ export default function Form({ mode }) {
 				/>
 			</InputGroup>
 			{mode === 'login' && <Text style={styles.forgotPassword}>Esqueceu sua senha?</Text>}
-			<Button onPress={handleSubmit}>
+			<Button onPress={handleSubmit} loading={loading}>
 				<Text style={styles.buttonLabel}>
 					{mode === 'login' ? 'Login' : 'Criar Conta'}
 				</Text>

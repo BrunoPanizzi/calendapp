@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useRoute } from '@react-navigation/native'
 
 import CalendarService from '../services/CalendarService'
 
@@ -14,9 +13,8 @@ import DateSelector from '../components/DateSelector'
 import ColorSelection from '../components/ColorSelection'
 import Button from '../components/Button'
 
-export default function CreateEvent({ navigation }) {
-	const route = useRoute()
-	
+export default function CreateEvent({ route, navigation }) {
+	const [loading, setLoading] = useState(false)
 	const [eventName, setEventName] = useState('')
 	const [description, setDescription] = useState('')
 	const [start, setStart] = useState()
@@ -24,6 +22,7 @@ export default function CreateEvent({ navigation }) {
 	const [color, setColor] = useState('')
 	
 	const handleSubmit = async () => {
+		setLoading(true)
 		try {
 			await CalendarService.addEvent(route.params, {
 				title: eventName, 
@@ -36,6 +35,8 @@ export default function CreateEvent({ navigation }) {
 			navigation.goBack()
 		} catch (e) {
 			console.log(e)
+		} finally {
+			setLoading(false)
 		}
 	}
 	
@@ -72,7 +73,7 @@ export default function CreateEvent({ navigation }) {
 				<ColorSelection selectedColor={color} setSelectedColor={setColor} />
 			</InputGroup>
 
-			<Button onPress={handleSubmit} >
+			<Button onPress={handleSubmit} loading={loading} >
 				<Text style={styles.text}>Criar</Text>
 			</Button>
 		</View>
