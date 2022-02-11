@@ -1,40 +1,50 @@
-import calendars from '../../mocks/calendars'
+import { 
+	collection,
+	query,
+	where,
+	addDoc,
+	getDocs,
+	doc,
+	updateDoc,
+	arrayUnion,
+	arrayRemove, 
+	deleteDoc
+} from 'firebase/firestore'
 
-import isSameDay from '../../utils/isSameDay'
-import isBetweenDates from '../../utils/isBetweenDates'
+import { db, Auth } from '../../../firebase'
 
 class CalendarService {
-	getInfo(id) {
-		return calendars.find(calendar => calendar.id === id)
-	}
-	addEvent(calendarId, eventDetails) {
-		console.log('adding')
-		console.log(eventDetails)
-		console.log(calendarId)
-		// calendars[calendars.findIndex(calendar => calendar.id === calendarId)].events.push(eventDetails)
-		// TODO make this thing work
-		const calendar = calendars.find(calendar => calendar.id === calendarId)
-		if (!calendar) return false
-
-		calendar.events.push(eventDetails)
-		
-	}
-	getEventByDate(calendarId, date) {
-		const calendar = calendars.find(calendar => calendar.id === calendarId)
-		if (!calendar) return false
-
-		const events = calendar.events
-
-		let eventsOnDate = []
-		events.forEach(e => {
-			if (e.type === 'single') {
-				isSameDay(e.start, date) && eventsOnDate.push(e)
-			} else if (isBetweenDates(e.start, e.end, date)) {
-				eventsOnDate.push(e)
-			}
+	async addCalendar({ title, isPublic }) {
+		return addDoc(collection(db, 'calendars'), {
+			title,
+			isPublic,
+			events: [],
+			creator: Auth.currentUser.uid
 		})
-		return eventsOnDate
 	}
+
+	getCalendars(uid) {
+		return query(collection(db, 'calendars'), where('creator', '==', uid))
+	}
+
+	getCalendar(id) {
+		return doc(db, `calendars/${id}`)
+	}
+	
+	addEvent(calendarId, eventDetails) {
+		const calendarRef = doc(db, `calendars/${calendarId}`)
+		return updateDoc(calendarRef, {
+			events: arrayUnion({
+				...eventDetails,
+				creatorId: Auth.currentUser.uid
+			})
+		})
+	}
+
+	deleteCalendar(calendarId) {
+		return deleteDoc(doc(db, `calendars/${calendarId}`))
+	}
+	
 }
 
 export default new CalendarService()

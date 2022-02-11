@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useRoute } from '@react-navigation/native'
 
 import CalendarService from '../services/CalendarService'
 
@@ -14,25 +13,31 @@ import DateSelector from '../components/DateSelector'
 import ColorSelection from '../components/ColorSelection'
 import Button from '../components/Button'
 
-export default function CreateEvent() {
-	const route = useRoute()
-	
+export default function CreateEvent({ route, navigation }) {
+	const [loading, setLoading] = useState(false)
 	const [eventName, setEventName] = useState('')
 	const [description, setDescription] = useState('')
 	const [start, setStart] = useState()
 	const [end, setEnd] = useState()
 	const [color, setColor] = useState('')
 	
-	const handleSubmit = () => {
-		console.log({eventName, description, start, end, color})
-		CalendarService.addEvent(route.params, {
-			title: eventName, 
-			colorHue: color,
-			description, 
-			type: isSameDay(start, end) || !end ? 'single' : 'span',
-			start: start?.valueOf(), 
-			end: end?.valueOf(), 
-		})
+	const handleSubmit = async () => {
+		setLoading(true)
+		try {
+			await CalendarService.addEvent(route.params, {
+				title: eventName, 
+				colorHue: color,
+				description, 
+				type: isSameDay(start, end) || !end ? 'single' : 'span',
+				start: start?.valueOf(), 
+				end: end ? end.valueOf() : null, // firestore things, it doesn't understand `undefined`, just `null` 
+			})
+			navigation.goBack()
+		} catch (e) {
+			console.log(e)
+		} finally {
+			setLoading(false)
+		}
 	}
 	
 	// TODO add error messages
@@ -68,7 +73,7 @@ export default function CreateEvent() {
 				<ColorSelection selectedColor={color} setSelectedColor={setColor} />
 			</InputGroup>
 
-			<Button onPress={handleSubmit} >
+			<Button onPress={handleSubmit} loading={loading} >
 				<Text style={styles.text}>Criar</Text>
 			</Button>
 		</View>

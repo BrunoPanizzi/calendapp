@@ -91,7 +91,7 @@ function MainNavigation() {
         options={({ route }) => ({title: route.params.title})}
       />
       <Stack.Screen 
-        name='New Calendar' 
+        name='NewCalendar' 
         component={NewCalendar}
         options={{title: 'Novo Calendário'}}
       />
@@ -105,11 +105,11 @@ function MainNavigation() {
 }
 
 export default function Navigation() {
-  const { auth } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   
   return (
     <NavigationContainer>
-      {auth ? 
+      {user ? 
         <MainNavigation /> : 
         <Login /> 
       }

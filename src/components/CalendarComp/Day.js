@@ -75,7 +75,7 @@ export default function Day({ events, day, isThisMonth, fontSize }) {
 					style={[ 
 						styles.longEvent, 
 						e.borderStyle,
-						e.isEventSelected && {transform: [{scaleY: 1.2}]},
+						e.isEventSelected && { borderWidth: 4},
 						{borderColor: `hsla(${e?.colorHue}, 100%, 50%, 0.5)`}, 
 					]} 
 				/>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	selectedDay: {
-		transform: [{scale: 1.15}],
+		transform: [{scale: 1.1}],
 		color: defaultStyles.colors[500]
 	},
 	text: {

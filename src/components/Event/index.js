@@ -5,7 +5,7 @@ import { parseDate, parseTime } from '../../utils/parseDate'
 
 import defaultStyles from '../../styles/defaultStyles'
 
-export default function Event({ title, colorHue, description, type, start, end }) {
+export default function Event({ title, colorHue, description, creatorId, type, start, end }) {
   return (
     <TouchableOpacity 
       style={[
@@ -21,7 +21,7 @@ export default function Event({ title, colorHue, description, type, start, end }
 
         <View style={styles.rows}>
           <View style={styles.profilePicture}/>
-          <Text style={styles.userName}>nome da pessoa</Text>
+          <Text style={styles.userName} numberOfLines={1}>{creatorId}</Text>
         </View>
 
         <View style={[styles.rows, {justifyContent: 'space-between', flexWrap: 'wrap'}]}>
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 4,
   },
   rows: {
+    maxWidth: '100%',
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -76,7 +77,9 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 14,
+    marginRight: defaultStyles.spacing.small,
     color: 'gray',
+    maxWidth: '100%'
   },
   profilePicture: {
     width: 24, 

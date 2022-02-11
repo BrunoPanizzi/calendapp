@@ -1,44 +1,45 @@
-import { useContext } from 'react'
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, FlatList } from 'react-native'
+import { useEffect, useState } from 'react'
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, ScrollView } from 'react-native'
 
-import UserService from '../services/UserService'
+import { onSnapshot } from 'firebase/firestore'
 
-import { AuthContext } from '../contexts/AuthContext'
+import { Auth } from '../../firebase'
+
+import CalendarService from '../services/CalendarService'
 
 import defaultStyles from '../styles/defaultStyles'
 
-import SmallCalendar from '../components/SmallCalendar'
 import NewCalendarButton from '../components/NewCalendarButton'
+import HomeContent from '../components/HomeContent'
 
 
 export default function Home() {
-	const { width } = Dimensions.get('window')
-	const { setAuth } = useContext(AuthContext)
+	const [calendars, setCalendars] = useState([])
+	const [loading, setLoading] = useState(true)
+		
+	useEffect(() => {
+		const calendarsQuery = CalendarService.getCalendars(Auth.currentUser.uid)
+		const unsub = onSnapshot(calendarsQuery, (querySnapshot) => {
+			setCalendars(querySnapshot.docs)
+			setLoading(false)
+		})
+
+		return unsub
+	}, [])
 	
-	let calendars = UserService.listCalendars('').map(item => (
-		<SmallCalendar
-			id={item.id}
-			title={item.title}
-			width={width}
-		/>
-	))
-
-	calendars.push(<NewCalendarButton width={width} />)
-
 	return (
-		<View style={styles.container}>
-			<FlatList
-				data={calendars}
-				renderItem={({ item }) => item}
-				keyExtractor={() => Math.random()}
-				numColumns={2}
-				contentContainerStyle={{paddingHorizontal: defaultStyles.spacing.medium / 2}}
-			/>
-
-			<TouchableOpacity onPress={() => setAuth(false)}>
-				<Text>log out</Text>
-			</TouchableOpacity>
-		</View>
+		<>
+			<ScrollView style={styles.container}>
+				{loading
+					? <ActivityIndicator size='large' color={defaultStyles.colors[500]} />
+					: <HomeContent calendars={calendars} />
+				}
+				<TouchableOpacity onPress={async () => await Auth.signOut()}>
+					<Text>log out</Text>
+				</TouchableOpacity>
+			</ScrollView>
+			<NewCalendarButton  />
+		</>
 	)
 }
 
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: defaultStyles.colors[0],
 		flex: 1,
+		padding: defaultStyles.spacing.medium
 	},
 	calendarsList: {
 		padding: 12,

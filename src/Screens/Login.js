@@ -1,7 +1,6 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { StyleSheet, Text, View, Image, Pressable, Animated } from 'react-native'
 
-import { AuthContext } from '../contexts/AuthContext'
 
 import Calendapp from '../../assets/Calendapp.png'
 import defaultStyles from '../styles/defaultStyles'
@@ -10,7 +9,6 @@ import MainLoginContent from '../components/LoginPage'
 
 
 export default function Login() {
-  const { setAuth } = useContext(AuthContext)
   const opacity = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
@@ -40,7 +38,7 @@ export default function Login() {
         
           <MainLoginContent />
         </View>
-        <Pressable onPress={() => setAuth(true)}>
+        <Pressable onPress={() => {}}>
           <Text>texto do rodapé</Text>
         </Pressable>
       </Animated.View>
