@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react'
-import { 
-	StyleSheet, 
-	View, 
-	Text, 
-	Dimensions, 
-	TouchableOpacity, 
-	FlatList, 
-	ActivityIndicator 
-} from 'react-native'
+import { StyleSheet, View, Text, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, ScrollView } from 'react-native'
 
 import { onSnapshot } from 'firebase/firestore'
 
@@ -17,13 +9,11 @@ import CalendarService from '../services/CalendarService'
 
 import defaultStyles from '../styles/defaultStyles'
 
-import SmallCalendar from '../components/SmallCalendar'
 import NewCalendarButton from '../components/NewCalendarButton'
+import HomeContent from '../components/HomeContent'
 
 
 export default function Home() {
-	const { width } = Dimensions.get('window')
-	
 	const [calendars, setCalendars] = useState([])
 	const [loading, setLoading] = useState(true)
 		
@@ -38,29 +28,18 @@ export default function Home() {
 	}, [])
 	
 	return (
-		<View style={styles.container}>
-			{loading ? 
-				<ActivityIndicator size='large' color={defaultStyles.colors[500]} /> :
-				<FlatList
-					data={calendars}
-					renderItem={({ item }) => 
-						<SmallCalendar
-							calendar={item.data()}
-							id={item.id}
-							width={width}
-						/>
-					}
-					keyExtractor={() => Math.random()}
-					numColumns={2}
-					contentContainerStyle={{paddingHorizontal: defaultStyles.spacing.medium / 2}}
-				/>
-			}
-
-			<NewCalendarButton width={width} />
-			<TouchableOpacity onPress={async () => await Auth.signOut()}>
-				<Text>log out</Text>
-			</TouchableOpacity>
-		</View>
+		<>
+			<ScrollView style={styles.container}>
+				{loading
+					? <ActivityIndicator size='large' color={defaultStyles.colors[500]} />
+					: <HomeContent calendars={calendars} />
+				}
+				<TouchableOpacity onPress={async () => await Auth.signOut()}>
+					<Text>log out</Text>
+				</TouchableOpacity>
+			</ScrollView>
+			<NewCalendarButton  />
+		</>
 	)
 }
 
@@ -68,6 +47,7 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: defaultStyles.colors[0],
 		flex: 1,
+		padding: defaultStyles.spacing.medium
 	},
 	calendarsList: {
 		padding: 12,

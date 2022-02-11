@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
-import { useRoute } from '@react-navigation/native'
+import { StyleSheet, Text, View } from 'react-native'
+import propTypes from 'prop-types'
 
 import { parseDate } from '../utils/parseDate'
+import isSameDay from '../utils/isSameDay'
+import isBetweenDates from '../utils/isBetweenDates'
 
 import { useCalendar } from '../contexts/CalendarContext'
 
@@ -10,27 +12,21 @@ import defaultStyles from '../styles/defaultStyles'
 import Event from './Event'
 
 
-export default function DayDetails() {
-  const route = useRoute()
-  const id = route.params.id
-  
+export default function DayDetails({ events }) {
   const { selectedDay } = useCalendar()
-  
-  const eventsOnDate = []
-  
+
+  let eventsOnDate = []
+	events.forEach(e => {
+		if (e.type === 'single') {
+			isSameDay(e.start, selectedDay) && eventsOnDate.push(e)
+		} else if (isBetweenDates(e.start, e.end, selectedDay)) {
+			eventsOnDate.push(e)
+		}
+	})
+    
   return (
     <>
       <Text style={styles.title}>{selectedDay ? parseDate(selectedDay) : 'Selecione um dia'}</Text>
-      {false && 
-        <FlatList 
-          style={styles.info}
-          contentContainerStyle={{alignItems: 'stretch'}}
-          data={eventsOnDate}
-          renderItem={({ item }) => <Event {...item} />}
-          keyExtractor={() => Math.random()}
-          ListEmptyComponent={() => <Text>sem itens</Text>}
-        />
-      }
       {eventsOnDate.length ?
         <View style={styles.info}>
           {eventsOnDate.map(item  => <Event {...item} key={Math.random()} />)}
@@ -40,6 +36,10 @@ export default function DayDetails() {
       }
     </>
   )
+}
+
+DayDetails.propTypes = {
+  events: propTypes.array.isRequired
 }
 
 const styles = StyleSheet.create({

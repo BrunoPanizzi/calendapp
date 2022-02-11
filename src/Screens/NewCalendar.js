@@ -35,7 +35,11 @@ export default function NewCalendar({ navigation }) {
   return (
     <View style={styles.container}>
       <InputGroup label='Nome do calendário'>
-        <Input value={title} onChange={setTitle} />
+        <Input 
+          value={title} 
+          onChange={setTitle} 
+          placeholder='Ex: Faculdade'
+        />
       </InputGroup>
       
       <ToggleGroup label='Permitir que outras pessoas adicionem eventos'>

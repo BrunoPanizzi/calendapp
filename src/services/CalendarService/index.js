@@ -7,15 +7,11 @@ import {
 	doc,
 	updateDoc,
 	arrayUnion,
-	arrayRemove 
+	arrayRemove, 
+	deleteDoc
 } from 'firebase/firestore'
 
 import { db, Auth } from '../../../firebase'
-
-import calendars from '../../mocks/calendars'
-
-import isSameDay from '../../utils/isSameDay'
-import isBetweenDates from '../../utils/isBetweenDates'
 
 class CalendarService {
 	async addCalendar({ title, isPublic }) {
@@ -37,28 +33,18 @@ class CalendarService {
 	
 	addEvent(calendarId, eventDetails) {
 		const calendarRef = doc(db, `calendars/${calendarId}`)
-		console.log(calendarRef.id)
 		return updateDoc(calendarRef, {
-			events: arrayUnion(eventDetails)
+			events: arrayUnion({
+				...eventDetails,
+				creatorId: Auth.currentUser.uid
+			})
 		})
 	}
 
-	getEventByDate(calendarId, date) {
-		const calendar = calendars.find(calendar => calendar.id === calendarId)
-		if (!calendar) return false
-
-		const events = calendar.events
-
-		let eventsOnDate = []
-		events.forEach(e => {
-			if (e.type === 'single') {
-				isSameDay(e.start, date) && eventsOnDate.push(e)
-			} else if (isBetweenDates(e.start, e.end, date)) {
-				eventsOnDate.push(e)
-			}
-		})
-		return eventsOnDate
+	deleteCalendar(calendarId) {
+		return deleteDoc(doc(db, `calendars/${calendarId}`))
 	}
+	
 }
 
 export default new CalendarService()

@@ -91,7 +91,7 @@ function MainNavigation() {
         options={({ route }) => ({title: route.params.title})}
       />
       <Stack.Screen 
-        name='New Calendar' 
+        name='NewCalendar' 
         component={NewCalendar}
         options={{title: 'Novo Calendário'}}
       />

@@ -11,6 +11,7 @@ import defaultStyles from '../styles/defaultStyles'
 import CalendarComp from '../components/CalendarComp'
 import NewEventButton from '../components/NewEventButton'
 import DayDetails from '../components/DayDetails'
+import NoEventsMessage from '../components/NoEventsMessage'
 
 
 export default function Calendar({ route }) {
@@ -34,7 +35,10 @@ export default function Calendar({ route }) {
 						<CalendarComp calendar={calendarInfo} />
 					</View>
 					<View style={styles.contentContainer}>
-						<DayDetails />
+						{calendarInfo.events.length 
+							? <DayDetails events={calendarInfo.events} />
+							: <NoEventsMessage />
+						}
 					</View>
 				</CalendarProvider>
 			</ScrollView>
