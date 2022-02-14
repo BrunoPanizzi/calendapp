@@ -1,19 +1,24 @@
 import { useContext } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createDrawerNavigator } from '@react-navigation/drawer'
 
-import { Animated } from 'react-native'
+import { Animated, Text } from 'react-native'
 
 import Home from './Screens/Home'
 import Calendar from './Screens/Calendar'
 import Login from './Screens/Login'
 import CreateEvent from './Screens/CreateEvent'
+import Configuration from './Screens/Configuration'
+
+import CustomDrawer from './components/CustomDrawer'
 
 import { AuthContext } from './contexts/AuthContext'
 
 import defaultStyles from './styles/defaultStyles'
 
 const Stack = createStackNavigator()
+const Drawer = createDrawerNavigator()
 
 const config = {
   animation: 'spring',
@@ -25,6 +30,18 @@ const config = {
     restDisplacementThreshold: 0.01,
     restSpeedThreshold: 0.01,
   },
+}
+
+const headerConfig = {
+  headerStyle: {
+    backgroundColor: defaultStyles.colors[0]
+  },
+  headerTintColor: defaultStyles.colors[700],
+  headerTitleAlign: 'center',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+    fontSize: defaultStyles.text.huge
+  }
 }
 
 const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
@@ -57,19 +74,28 @@ const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
   }
 }
 
+
+function DrawerNavigation() {
+  return (
+    <Drawer.Navigator
+      drawerContent={CustomDrawer}
+
+      screenOptions={{
+        ...headerConfig,
+        headerShown: true,
+
+      }}
+    >
+      <Drawer.Screen name='Home' component={Home} />
+    </Drawer.Navigator>
+  )
+}
+
 function MainNavigation() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: {
-          backgroundColor: defaultStyles.colors[0]
-        },
-        headerTintColor: defaultStyles.colors[700],
-        headerTitleAlign: 'center',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: defaultStyles.text.huge
-        },
+        ...headerConfig,
         presentation: 'card',
         gestureEnabled: true,
         gestureResponseDistance: 100,
@@ -81,8 +107,9 @@ function MainNavigation() {
       }}
     >
       <Stack.Screen
-        name='Home'
-        component={Home}
+        name='Drawer'
+        component={DrawerNavigation}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name='Calendar'
@@ -93,6 +120,11 @@ function MainNavigation() {
         name='CreateEvent'
         component={CreateEvent}
         options={{title: 'Novo Evento'}}
+      />
+      <Stack.Screen
+        name='Configuration'
+        component={Configuration}
+        options={{title: 'Configurações'}}
       />
     </Stack.Navigator>
   )

@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, ScrollView } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
 
 import { onSnapshot } from 'firebase/firestore'
 
-import { Auth } from '../../firebase'
-
 import CalendarService from '../services/CalendarService'
+import UserService from '../services/UserService'
 
 import defaultStyles from '../styles/defaultStyles'
 
@@ -16,9 +15,10 @@ import HomeContent from '../components/HomeContent'
 export default function Home() {
 	const [calendars, setCalendars] = useState([])
 	const [loading, setLoading] = useState(true)
-		
+
 	useEffect(() => {
-		const calendarsQuery = CalendarService.getCalendars(Auth.currentUser.uid)
+    const user = UserService.getCurrentUser()
+		const calendarsQuery = CalendarService.getCalendars(user.uid)
 		const unsub = onSnapshot(calendarsQuery, (querySnapshot) => {
 			setCalendars(querySnapshot.docs)
 			setLoading(false)
@@ -26,7 +26,7 @@ export default function Home() {
 
 		return unsub
 	}, [])
-	
+
 	return (
 		<>
 			<ScrollView style={styles.container}>
@@ -34,11 +34,8 @@ export default function Home() {
 					? <ActivityIndicator size='large' color={defaultStyles.colors[500]} />
 					: <HomeContent calendars={calendars} />
 				}
-				<TouchableOpacity onPress={async () => await Auth.signOut()}>
-					<Text>log out</Text>
-				</TouchableOpacity>
 			</ScrollView>
-			<NewCalendarButton  />
+			<NewCalendarButton />
 		</>
 	)
 }
@@ -58,7 +55,7 @@ const styles = StyleSheet.create({
 	},
 	calendarContainer: {
 		backgroundColor: defaultStyles.colors[100],
-		marginBottom: 12, 
+		marginBottom: 12,
 		padding: defaultStyles.spacing.medium,
 		borderRadius: defaultStyles.borderRadius
 	},

@@ -2,14 +2,6 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } f
 import { Auth } from '../../../firebase'
 
 class UserService {
-	listCalendars(user) {
-		return [
-			{id: '123', title: 'Metas trabalho'},	
-			{id: '456', title: 'Eventos'},	
-			{id: '789', title: 'Aniversários'},	
-		]
-	}
-
 	login(email, password) {
 		return signInWithEmailAndPassword(Auth, email, password)
 	}
@@ -17,6 +9,10 @@ class UserService {
 	createUser(email, password) {
 		return createUserWithEmailAndPassword(Auth, email, password)
 	}
+
+  getCurrentUser() {
+    return Auth.currentUser
+  }
 
 	signOut() {
 		signOut(Auth)
