@@ -5,24 +5,19 @@ import { parseDate, parseTime } from '../../utils/parseDate'
 
 import defaultStyles from '../../styles/defaultStyles'
 
-export default function Event({ title, colorHue, description, creatorId, type, start, end }) {
+export default function Event({ title, colorHue, description, start, end }) {
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={[
-        styles.container, 
+        styles.container,
         {borderColor: `hsla(${colorHue}, 100%, 50%, 0.5)`}
       ]}
-      onPress={() => 'figure out how to expand event'}
+      onPress={() => console.log('figure out how to expand event')}
     >
       <View style={[styles.half, {marginHorizontal: defaultStyles.spacing.small}]}>
         <Text style={styles.title} numberOfLines={2}>
           {title}
         </Text>
-
-        <View style={styles.rows}>
-          <View style={styles.profilePicture}/>
-          <Text style={styles.userName} numberOfLines={1}>{creatorId}</Text>
-        </View>
 
         <View style={[styles.rows, {justifyContent: 'space-between', flexWrap: 'wrap'}]}>
           <Text style={{marginBottom: 4}}>Início: {parseTime(start)}</Text>
@@ -33,7 +28,7 @@ export default function Event({ title, colorHue, description, creatorId, type, s
       <View style={styles.half}>
         <Text style={[styles.description, !description && {color: 'gray'}]} numberOfLines={3}>
           {description ? description : 'Sem descrição para esse evento'}
-        </Text>   
+        </Text>
       </View>
     </TouchableOpacity>
   )
@@ -42,12 +37,10 @@ export default function Event({ title, colorHue, description, creatorId, type, s
 Event.propTypes = {
   title: propTypes.string.isRequired,
   colorHue: propTypes.number.isRequired,
-  type: propTypes.oneOf(['single', 'span']).isRequired,
-  creatorId: propTypes.string,
   start: propTypes.number.isRequired,
   end: propTypes.number,
   description: propTypes.string,
-  
+
 }
 
 const styles = StyleSheet.create({
@@ -74,19 +67,5 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'center',
     flex: 1
-  },
-  userName: {
-    fontSize: 14,
-    marginRight: defaultStyles.spacing.small,
-    color: 'gray',
-    maxWidth: '100%'
-  },
-  profilePicture: {
-    width: 24, 
-    aspectRatio: 1, 
-    backgroundColor: defaultStyles.colors[200], 
-    borderRadius: 99, 
-    marginVertical: defaultStyles.spacing.small,
-    marginRight: defaultStyles.spacing.small
   }
 })

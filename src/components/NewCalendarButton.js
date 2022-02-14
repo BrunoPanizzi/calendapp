@@ -1,16 +1,19 @@
+import { useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 
 import defaultStyles from '../styles/defaultStyles'
 
+import NewCalendarModal from './NewCalendarModal'
+
 export default function NewCalendarButton() {
-  const navigation = useNavigation()
-  
+  const [modalVisible, setModalVisible] = useState(false)
+
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate('NewCalendar')}
+      onPress={() => setModalVisible(true)}
     >
+      <NewCalendarModal visible={modalVisible} onClose={() => setModalVisible(false)} />
       <View style={styles.line} />
       <View style={[styles.line, {transform: [{rotate: '90deg'}]}]} />
     </TouchableOpacity>

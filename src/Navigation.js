@@ -8,7 +8,6 @@ import Home from './Screens/Home'
 import Calendar from './Screens/Calendar'
 import Login from './Screens/Login'
 import CreateEvent from './Screens/CreateEvent'
-import NewCalendar from './Screens/NewCalendar'
 
 import { AuthContext } from './contexts/AuthContext'
 
@@ -35,12 +34,12 @@ const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
       outputRange: [0, 1],
       extrapolate: 'clamp',
     }),
-    next ? 
+    next ?
       next.progress.interpolate({
         inputRange: [0, 1],
         outputRange: [0, 1],
         extrapolate: 'clamp',
-      }): 
+      }):
       0
   )
 
@@ -58,7 +57,7 @@ const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
   }
 }
 
-function MainNavigation() {  
+function MainNavigation() {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -68,7 +67,7 @@ function MainNavigation() {
         headerTintColor: defaultStyles.colors[700],
         headerTitleAlign: 'center',
         headerTitleStyle: {
-          fontWeight: 'bold', 
+          fontWeight: 'bold',
           fontSize: defaultStyles.text.huge
         },
         presentation: 'card',
@@ -81,24 +80,19 @@ function MainNavigation() {
         cardStyleInterpolator: forSlide
       }}
     >
-      <Stack.Screen 
-        name='Home' 
-        component={Home} 
+      <Stack.Screen
+        name='Home'
+        component={Home}
       />
-      <Stack.Screen 
-        name='Calendar' 
+      <Stack.Screen
+        name='Calendar'
         component={Calendar}
         options={({ route }) => ({title: route.params.title})}
       />
-      <Stack.Screen 
-        name='NewCalendar' 
-        component={NewCalendar}
-        options={{title: 'Novo Calendário'}}
-      />
-      <Stack.Screen 
-        name='CreateEvent' 
-        component={CreateEvent} 
-        options={{title: 'Novo Evento'}} 
+      <Stack.Screen
+        name='CreateEvent'
+        component={CreateEvent}
+        options={{title: 'Novo Evento'}}
       />
     </Stack.Navigator>
   )
@@ -106,12 +100,12 @@ function MainNavigation() {
 
 export default function Navigation() {
   const { user } = useContext(AuthContext)
-  
+
   return (
     <NavigationContainer>
-      {user ? 
-        <MainNavigation /> : 
-        <Login /> 
+      {user ?
+        <MainNavigation /> :
+        <Login />
       }
     </NavigationContainer>
   )

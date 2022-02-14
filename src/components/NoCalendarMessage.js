@@ -1,20 +1,23 @@
+import { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 
 import defaultStyles from '../styles/defaultStyles'
 
+import NewCalendarModal from './NewCalendarModal'
+
 export default function NoCalendarMessage() {
-	const navigation = useNavigation()
-	
+  const [modalVisible, setModalVisible] = useState(false)
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.nothingHere}>Nada por aqui...</Text>
-			<TouchableOpacity 
+			<TouchableOpacity
 				style={styles.firstCalendarContainer}
-				onPress={() => navigation.navigate('NewCalendar')}
+				onPress={() => setModalVisible(true)}
 			>
 				<Text style={styles.firstCalendar}>Crie seu primeiro calendário!</Text>
 			</TouchableOpacity>
+      <NewCalendarModal visible={modalVisible} onClose={() => setModalVisible(false)} />
 		</View>
 	)
 }

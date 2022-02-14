@@ -11,7 +11,7 @@ export default function Button({ children, disabled, onPress, loading }) {
 			onPress={onPress}
 		>
 			{loading
-				? <ActivityIndicator color={defaultStyles.colors[100]} size='large' /> 
+				? <ActivityIndicator color={defaultStyles.colors[100]} size='large' />
 				: children
 			}
 		</TouchableOpacity>
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: defaultStyles.colors[500],
     borderRadius: defaultStyles.borderRadius,
     padding: defaultStyles.spacing.small,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: defaultStyles.spacing.small
 	}
 })

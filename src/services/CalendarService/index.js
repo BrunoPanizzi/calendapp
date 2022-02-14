@@ -1,4 +1,4 @@
-import { 
+import {
 	collection,
 	query,
 	where,
@@ -7,17 +7,16 @@ import {
 	doc,
 	updateDoc,
 	arrayUnion,
-	arrayRemove, 
+	arrayRemove,
 	deleteDoc
 } from 'firebase/firestore'
 
 import { db, Auth } from '../../../firebase'
 
 class CalendarService {
-	async addCalendar({ title, isPublic }) {
+	async addCalendar({ title }) {
 		return addDoc(collection(db, 'calendars'), {
 			title,
-			isPublic,
 			events: [],
 			creator: Auth.currentUser.uid
 		})
@@ -30,7 +29,7 @@ class CalendarService {
 	getCalendar(id) {
 		return doc(db, `calendars/${id}`)
 	}
-	
+
 	addEvent(calendarId, eventDetails) {
 		const calendarRef = doc(db, `calendars/${calendarId}`)
 		return updateDoc(calendarRef, {
@@ -44,7 +43,7 @@ class CalendarService {
 	deleteCalendar(calendarId) {
 		return deleteDoc(doc(db, `calendars/${calendarId}`))
 	}
-	
+
 }
 
 export default new CalendarService()

@@ -12,7 +12,7 @@ export default {
 		900: '#060713',
 		danger: '#f52745'
 	},
-	borderRadius: 6,
+	borderRadius: 8,
 	spacing: {
 		small: 8,
 		medium: 16,
