@@ -3,10 +3,12 @@ import propTypes from 'prop-types'
 
 import defaultStyles from '../styles/defaultStyles'
 
-export default function Button({ children, disabled, onPress, loading }) {
+export default function Button({ children, disabled, onPress, loading, danger, outline }) {
+  const color = danger ? defaultStyles.colors.danger : defaultStyles.colors[500]
+
 	return (
 		<TouchableOpacity
-			style={styles.button}
+			style={[styles.button, outline ? styles.outlineButton(color) : styles.solidButton(color)]}
 			disabled={disabled}
 			onPress={onPress}
 		>
@@ -27,11 +29,22 @@ Button.propTypes = {
 
 const styles = StyleSheet.create({
 	button: {
-		width: '100%',
-    backgroundColor: defaultStyles.colors[500],
+    width: '100%',
     borderRadius: defaultStyles.borderRadius,
     padding: defaultStyles.spacing.small,
     alignItems: 'center',
-    marginTop: defaultStyles.spacing.small
-	}
+    marginTop: defaultStyles.spacing.small,
+    borderWidth: 3,
+	},
+  solidButton(color) {
+    return {
+      borderColor: color,
+      backgroundColor: color
+    }
+  },
+  outlineButton(color) {
+    return {
+      borderColor: color
+    }
+  }
 })
