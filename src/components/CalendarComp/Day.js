@@ -9,11 +9,12 @@ import isBetweenDates from '../../utils/isBetweenDates'
 
 import defaultStyles from '../../styles/defaultStyles'
 
-
+// TODO useMemo some stuff for performance
 export default function Day({ events, day, isThisMonth, fontSize }) {
 	const route = useRoute()
 	const { selectedDay, setSelectedDay } = route.name !== 'Home' && useCalendar()
 	const isSelected = isSameDay(selectedDay, day)
+  const isToday = isSameDay(day, Date.now())
 
 	const eventsThisDay = events.filter(e => e.type === 'single' && isSameDay(e.start, day))
 
@@ -40,25 +41,25 @@ export default function Day({ events, day, isThisMonth, fontSize }) {
 	return (
 		<Pressable
 			disabled={route.name === 'Home'}
-			style={styles.day}
+			style={[styles.day, isSelected && styles.selectedDay]}
 			onPress={() => setSelectedDay(day)}
 		>
 			<Text
 				style={[
 					styles.text,
 					isThisMonth ? styles.textInMonth : styles.textNotInMonth,
-					isSelected && styles.selectedDay,
-					{fontSize}
+          isToday ? { fontSize: fontSize + 3, color: defaultStyles.colors[400] } : {fontSize}
 				]}
 			>
 				{day.getDate()}
 			</Text>
 
-			<View style={[styles.events, isSelected && styles.selectedDay]}>
+			<View style={styles.events}>
 				{eventsThisDay.map(e =>
 					<View
 						key={Math.random()}
 						style={{
+              zIndex: -1,
 							flex: 1,
 							backgroundColor: `hsla(${e?.colorHue}, 100%, 50%, 0.5)`
 						}}
@@ -83,7 +84,6 @@ export default function Day({ events, day, isThisMonth, fontSize }) {
 
 Day.propTypes = {
 	events: propTypes.array.isRequired,
-	delay: propTypes.number.isRequired,
 	day: propTypes.instanceOf(Date).isRequired,
 	isThisMonth: propTypes.bool.isRequired,
 	fontSize: propTypes.number.isRequired
@@ -92,20 +92,21 @@ Day.propTypes = {
 const styles = StyleSheet.create({
 	day: {
 		position: 'relative',
+    zIndex: 4,
 		marginTop: '1%',
 		justifyContent: 'center',
 		alignItems: 'center',
     width: 100 / 7 + '%',
     aspectRatio: 1,
-    padding: '2%'
+    padding: '2%',
 	},
 	selectedDay: {
-		transform: [{scale: 1.1}],
-		color: defaultStyles.colors[500]
-	},
+    backgroundColor: defaultStyles.colors[0],
+    borderRadius: 8
+  },
 	text: {
 		position: 'absolute',
-		zIndex: 2,
+		zIndex: 32,
 		fontSize: 16,
 		color: defaultStyles.colors[700]
 	},

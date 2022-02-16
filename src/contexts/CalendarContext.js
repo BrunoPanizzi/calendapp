@@ -4,9 +4,12 @@ export const calendarContext = createContext()
 
 export default function CalendarProvider({ children }){
   const [selectedDay, setSelectedDay] = useState('')
-  
+
   return (
-    <calendarContext.Provider value={{selectedDay, setSelectedDay}}>
+    <calendarContext.Provider value={{
+      selectedDay,
+      setSelectedDay,
+    }}>
       {children}
     </calendarContext.Provider>
   )

@@ -7,30 +7,28 @@ import defaultStyles from '../../styles/defaultStyles'
 import Day from './Day'
 import Header from './Header'
 
+
 export default function CalendarComp({ compact, calendar }) {
 	const today = new Date()
 	const [month, setMonth] = useState(new Date(today.getFullYear(), today.getMonth()))
 
 	const daysArr = useMemo(() => {
-		const calendarStart = new Date(month.valueOf() - month.getDay() * 24 * 60 * 60 * 1000)
-		let assistArr = []
+    // timestamp to the first day of the calendar
+		const calendarStart = month.valueOf() - month.getDay() * 24 * 60 * 60 * 1000
 
-		let assistDate = calendarStart.valueOf()
-		for (let i = 0; i < 42; i++) {
-			let currentDay = new Date(assistDate)
-			let dayObj =
-				<Day
-					events={calendar.events || []}
-					key={Math.random()}
-					delay={i}
-					day={currentDay}
-					isThisMonth={currentDay.getMonth() === month.getMonth()}
-					fontSize={compact ? 10 : 16}
-				/>
+    let assistArr = Array(42).fill('').map((_, i) => {
+      const currentDay = new Date(calendarStart + 24 * 60 * 60 * 1000 * i)
+      return (
+        <Day
+          events={calendar.events || []}
+          key={Math.random()}
+          day={currentDay}
+          isThisMonth={currentDay.getMonth() === month.getMonth()}
+          fontSize={compact ? 10 : 16}
+        />
+      )
+    })
 
-			assistArr.push(dayObj)
-			assistDate += 24 * 60 * 60 * 1000
-		}
 		return assistArr
 	}, [month, calendar])
 
@@ -75,7 +73,5 @@ const styles = StyleSheet.create({
 		width: '100%',
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		justifyContent: 'space-between',
-		alignItems: 'center'
 	}
 })

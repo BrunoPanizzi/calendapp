@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, StyleSheet, View }  from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { FontAwesome5 } from '@expo/vector-icons'
 import propTypes from 'prop-types'
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 
 import CalendarService from '../services/CalendarService'
 
@@ -21,28 +22,33 @@ export default function SmallCalendar({ calendar, id, width }) {
   const deleteCalendar = async () => await CalendarService.deleteCalendar(id)
 
   return (
-    <TouchableOpacity
-      style={[styles.calendarContainer, {width}]}
-      onPress={() => navigation.navigate('Calendar', {id, calendar})}
+    <Animated.View
+      entering={FadeIn}
+      exiting={FadeOut}
     >
-      <View style={styles.header}>
-        <Text style={styles.text}>{calendar.title}</Text>
-        <Menu
-          button={<FontAwesome5 name='ellipsis-v' size={16} color={defaultStyles.colors[600]} />}
-          options={['Excluir', 'opção2', 'opção 3']}
-          actions={[() => setDangerModalVisible(true)]}
-        />
-        <DangerModal
-          title={`Excluir ${calendar.title}?`}
-          message={`Você realmente quer excluir ${calendar.title}?\nEssa ação é irreversível`}
-          visible={dangerModalVisible}
-          onClose={() => setDangerModalVisible(false)}
-          dangerousAction={deleteCalendar}
-          dangerLabel='Excluir'
-        />
-      </View>
-      <CalendarComp compact calendar={calendar} />
-    </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.calendarContainer, {width}]}
+        onPress={() => navigation.navigate('Calendar', {id, calendar})}
+      >
+        <View style={styles.header}>
+          <Text style={styles.text}>{calendar.title}</Text>
+          <Menu
+            button={<FontAwesome5 name='ellipsis-v' size={16} color={defaultStyles.colors[600]} />}
+            options={['Excluir', 'opção2', 'opção 3']}
+            actions={[() => setDangerModalVisible(true)]}
+          />
+          <DangerModal
+            title={`Excluir ${calendar.title}?`}
+            message={`Você realmente quer excluir ${calendar.title}?\nEssa ação é irreversível`}
+            visible={dangerModalVisible}
+            onClose={() => setDangerModalVisible(false)}
+            dangerousAction={deleteCalendar}
+            dangerLabel='Excluir'
+          />
+        </View>
+        <CalendarComp compact calendar={calendar} />
+      </TouchableOpacity>
+    </Animated.View>
   )
 }
 

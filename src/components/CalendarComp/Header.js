@@ -11,9 +11,9 @@ export default function Header({ currDate, previousMonth, nextMonth }) {
 		size: defaultStyles.spacing.large,
 		color: defaultStyles.colors[700]
 	}
-	
+
 	return (
-		<View>
+		<>
 			<View style={styles.months}>
 				<TouchableOpacity onPress={previousMonth}>
 					<Entypo name='chevron-left' {...arrowConfig} />
@@ -34,14 +34,14 @@ export default function Header({ currDate, previousMonth, nextMonth }) {
 				<Text key={5} style={styles.day}>S</Text>
 				<Text key={6} style={styles.day}>S</Text>
 			</View>
-		</View>
+		</>
 	)
 }
 
-Header.propTypes = { 
-	currDate: propTypes.instanceOf(Date).isRequired, 
-	previousMonth: propTypes.func.isRequired, 
-	nextMonth: propTypes.func.isRequired 
+Header.propTypes = {
+	currDate: propTypes.instanceOf(Date).isRequired,
+	previousMonth: propTypes.func.isRequired,
+	nextMonth: propTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({

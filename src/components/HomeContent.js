@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import propTypes from 'prop-types'
 
 import SmallCalendar from './SmallCalendar'
 import NoCalendarMessage from './NoCalendarMessage'
@@ -13,7 +12,7 @@ export default function HomeContent({ calendars }) {
 		<View>
 			<Text style={styles.sectionTitle}>Seus calendários: </Text>
 			<View style={styles.calendarsContainer} >
-				{calendars.length 
+				{calendars.length
 					? calendars.map(calendar => (
 						<SmallCalendar
 							calendar={calendar.data()}
@@ -30,7 +29,7 @@ export default function HomeContent({ calendars }) {
 
 const styles = StyleSheet.create({
 	calendarsContainer: {
-		flexDirection: 'row', 
+		flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'space-between'
 	},
