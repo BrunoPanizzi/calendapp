@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contentContainer: {
+    minWidth: '65%',
     maxWidth: '80%',
     backgroundColor: defaultStyles.colors[0],
     padding: defaultStyles.spacing.medium,

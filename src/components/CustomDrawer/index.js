@@ -16,7 +16,15 @@ export default function CustomDrawer({ navigation }) {
         navigation.closeDrawer()
         navigation.navigate('Configuration')
       }
-    }
+    },
+    {
+      icon: <Ionicons name="information-circle-outline" size={28} color="black" />,
+      label: 'Sobre o app',
+      onPress: () => {
+        navigation.closeDrawer()
+        navigation.navigate('Configuration')
+      }
+    },
   ]
 
   return (

@@ -18,38 +18,35 @@ export default function Day({ events, day, isThisMonth, fontSize }) {
 	const eventsThisDay = events.filter(e => e.type === 'single' && isSameDay(e.start, day))
 
 	let longEvents = events.filter(e => e.type === 'span' && isBetweenDates(e.start, e.end, day))
-	
+
 	longEvents = longEvents.map((event) => {
 		let borderStyle
-	
+
 		if (isSameDay(event.start, day)){
-			borderStyle = styles.beginning	
+			borderStyle = styles.beginning
 		} else if (isSameDay(event.end, day)) {
 			borderStyle = styles.end
 		} else {
 			borderStyle = styles.middle
 		}
 
-		// add borderStyle to event object, used to style the border of the component 
-		event.borderStyle = borderStyle 
+		// add borderStyle to event object, used to style the border of the component
+		event.borderStyle = borderStyle
 		event.isEventSelected = isBetweenDates(event.start, event.end, selectedDay)
-			
+
 		return event
 	})
-	
+
 	return (
 		<Pressable
 			disabled={route.name === 'Home'}
-			style={[
-				styles.day,
-				{ width: 100 / 7 + '%', aspectRatio: 1, padding: '2%' },
-			]}
+			style={styles.day}
 			onPress={() => setSelectedDay(day)}
 		>
-			<Text 
+			<Text
 				style={[
-					styles.text, 
-					isThisMonth ? styles.textInMonth : styles.textNotInMonth, 
+					styles.text,
+					isThisMonth ? styles.textInMonth : styles.textNotInMonth,
 					isSelected && styles.selectedDay,
 					{fontSize}
 				]}
@@ -58,37 +55,37 @@ export default function Day({ events, day, isThisMonth, fontSize }) {
 			</Text>
 
 			<View style={[styles.events, isSelected && styles.selectedDay]}>
-				{eventsThisDay.map(e => 
-					<View 
-						key={Math.random()} 
+				{eventsThisDay.map(e =>
+					<View
+						key={Math.random()}
 						style={{
-							flex: 1, 
+							flex: 1,
 							backgroundColor: `hsla(${e?.colorHue}, 100%, 50%, 0.5)`
-						}} 
+						}}
 					/>
 				)}
 			</View>
 
-			{longEvents.map(e => 
-				<View 
-					key={Math.random()} 
-					style={[ 
-						styles.longEvent, 
+			{longEvents.map(e =>
+				<View
+					key={Math.random()}
+					style={[
+						styles.longEvent,
 						e.borderStyle,
 						e.isEventSelected && { borderWidth: 4},
-						{borderColor: `hsla(${e?.colorHue}, 100%, 50%, 0.5)`}, 
-					]} 
+						{borderColor: `hsla(${e?.colorHue}, 100%, 50%, 0.5)`},
+					]}
 				/>
 			)}
 		</Pressable>
 	)
 }
 
-Day.propTypes = { 
+Day.propTypes = {
 	events: propTypes.array.isRequired,
-	delay: propTypes.number.isRequired, 
-	day: propTypes.instanceOf(Date).isRequired, 
-	isThisMonth: propTypes.bool.isRequired, 
+	delay: propTypes.number.isRequired,
+	day: propTypes.instanceOf(Date).isRequired,
+	isThisMonth: propTypes.bool.isRequired,
 	fontSize: propTypes.number.isRequired
 }
 
@@ -98,6 +95,9 @@ const styles = StyleSheet.create({
 		marginTop: '1%',
 		justifyContent: 'center',
 		alignItems: 'center',
+    width: 100 / 7 + '%',
+    aspectRatio: 1,
+    padding: '2%'
 	},
 	selectedDay: {
 		transform: [{scale: 1.1}],

@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 
-import { Animated, Text } from 'react-native'
+import { Animated } from 'react-native'
 
 import Home from './Screens/Home'
 import Calendar from './Screens/Calendar'
@@ -79,11 +79,9 @@ function DrawerNavigation() {
   return (
     <Drawer.Navigator
       drawerContent={CustomDrawer}
-
       screenOptions={{
         ...headerConfig,
-        headerShown: true,
-
+        headerShown: true
       }}
     >
       <Drawer.Screen name='Home' component={Home} />

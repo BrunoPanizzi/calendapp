@@ -1,26 +1,37 @@
+import { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { Entypo } from '@expo/vector-icons'
 
 import UserService from '../../services/UserService'
 
 import defaultStyles from '../../styles/defaultStyles'
 
+import DangerModal from '../DangerModal'
+
 export default function Header() {
   const user = UserService.getCurrentUser()
+  const [dangerModalOpen, setDangerModalOpen] = useState(false)
 
   return (
     <View style={styles.container}>
       <View style={styles.rows}>
         <Text style={styles.title}>Sua conta</Text>
-        <TouchableOpacity onPress={UserService.signOut}>
+        <TouchableOpacity onPress={() => setDangerModalOpen(true)}>
           <Text style={[styles.title, styles.exit]}>Sair</Text>
+          <DangerModal
+            visible={dangerModalOpen}
+            onClose={() => setDangerModalOpen(false)}
+            title={'Encerrar sessão'}
+            message={'Você deseja sair da sua conta?'}
+            dangerousAction={UserService.signOut}
+            dangerLabel={'Sair'}
+          />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.accountDetail} /* TODO create dropdown menu */ >
+      <View style={styles.rows}>
         <View style={styles.bulletPoint} />
         <Text style={styles.email} numberOfLines={1}>{user.email}</Text>
-        <Entypo name='chevron-down' size={24} color={defaultStyles.colors[700]} />
-      </TouchableOpacity>
+      </View>
+
     </View>
   )
 }
@@ -33,7 +44,8 @@ const styles = StyleSheet.create({
   },
   rows: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   title: {
     fontSize: 18,

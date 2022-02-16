@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: defaultStyles.spacing.medium,
+    marginTop: defaultStyles.spacing.medium,
+    marginLeft: defaultStyles.spacing.medium,
   },
   label: {
     fontSize: 16,

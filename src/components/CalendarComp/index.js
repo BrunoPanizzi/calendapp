@@ -10,7 +10,7 @@ import Header from './Header'
 export default function CalendarComp({ compact, calendar }) {
 	const today = new Date()
 	const [month, setMonth] = useState(new Date(today.getFullYear(), today.getMonth()))
-	
+
 	const daysArr = useMemo(() => {
 		const calendarStart = new Date(month.valueOf() - month.getDay() * 24 * 60 * 60 * 1000)
 		let assistArr = []
@@ -18,11 +18,11 @@ export default function CalendarComp({ compact, calendar }) {
 		let assistDate = calendarStart.valueOf()
 		for (let i = 0; i < 42; i++) {
 			let currentDay = new Date(assistDate)
-			let dayObj = 
-				<Day 
+			let dayObj =
+				<Day
 					events={calendar.events || []}
-					key={Math.random()} 
-					delay={i} 
+					key={Math.random()}
+					delay={i}
 					day={currentDay}
 					isThisMonth={currentDay.getMonth() === month.getMonth()}
 					fontSize={compact ? 10 : 16}
@@ -44,8 +44,8 @@ export default function CalendarComp({ compact, calendar }) {
 
 	return (
 		<>
-			{!compact && 
-			<Header 
+			{!compact &&
+      <Header
 				currDate={month}
 				previousMonth={previousMonth}
 				nextMonth={nextMonth}
