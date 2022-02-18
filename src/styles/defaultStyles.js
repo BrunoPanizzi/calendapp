@@ -13,6 +13,7 @@ export default {
 		danger: '#d92916'
 	},
 	borderRadius: 8,
+  bigBorderRadius: 24,
 	spacing: {
 		small: 8,
 		medium: 16,

@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native'
-import { useRoute } from '@react-navigation/native'
 import propTypes from 'prop-types'
 
 import { useCalendar } from '../../contexts/CalendarContext'
@@ -10,12 +9,13 @@ import isBetweenDates from '../../utils/isBetweenDates'
 import defaultStyles from '../../styles/defaultStyles'
 
 // TODO useMemo some stuff for performance
-export default function Day({ events, day, isThisMonth, fontSize }) {
-	const route = useRoute()
-	const { selectedDay, setSelectedDay } = route.name !== 'Home' && useCalendar()
+export default function Day({ events, day, isThisMonth, compact }) {
+	const { selectedDay, setSelectedDay } = !compact && useCalendar()
 	const isSelected = isSameDay(selectedDay, day)
   const isToday = isSameDay(day, Date.now())
 
+  const fontSize = compact ? 10 : 16
+  const borderRadius = compact ? 4 : defaultStyles.borderRadius
 	const eventsThisDay = events.filter(e => e.type === 'single' && isSameDay(e.start, day))
 
 	let longEvents = events.filter(e => e.type === 'span' && isBetweenDates(e.start, e.end, day))
@@ -40,28 +40,17 @@ export default function Day({ events, day, isThisMonth, fontSize }) {
 
 	return (
 		<Pressable
-			disabled={route.name === 'Home'}
-			style={[styles.day, isSelected && styles.selectedDay]}
+			disabled={compact}
+			style={[styles.day, isSelected && styles.selectedDay, { borderRadius }]}
 			onPress={() => setSelectedDay(day)}
 		>
-			<Text
-				style={[
-					styles.text,
-					isThisMonth ? styles.textInMonth : styles.textNotInMonth,
-          isToday ? { fontSize: fontSize + 3, color: defaultStyles.colors[400] } : {fontSize}
-				]}
-			>
-				{day.getDate()}
-			</Text>
-
-			<View style={styles.events}>
+			<View style={[styles.events, { borderRadius, opacity: 0.5 }]}>
 				{eventsThisDay.map(e =>
 					<View
 						key={Math.random()}
 						style={{
-              zIndex: -1,
 							flex: 1,
-							backgroundColor: `hsla(${e?.colorHue}, 100%, 50%, 0.5)`
+							backgroundColor: `hsl(${e?.colorHue}, 100%, 50%)`,
 						}}
 					/>
 				)}
@@ -71,13 +60,25 @@ export default function Day({ events, day, isThisMonth, fontSize }) {
 				<View
 					key={Math.random()}
 					style={[
-						styles.longEvent,
+						{ borderRadius },
+            styles.longEvent,
 						e.borderStyle,
-						e.isEventSelected && { borderWidth: 4},
+						e.isEventSelected && { borderWidth: 4 },
 						{borderColor: `hsla(${e?.colorHue}, 100%, 50%, 0.5)`},
 					]}
 				/>
 			)}
+
+      <Text
+        style={[
+          styles.text,
+          isThisMonth ? styles.textInMonth : styles.textNotInMonth,
+          { fontSize },
+          isToday && { color: defaultStyles.colors[500], transform: [{scale: 1.4}] }
+        ]}
+      >
+        {day.getDate()}
+      </Text>
 		</Pressable>
 	)
 }
@@ -86,7 +87,7 @@ Day.propTypes = {
 	events: propTypes.array.isRequired,
 	day: propTypes.instanceOf(Date).isRequired,
 	isThisMonth: propTypes.bool.isRequired,
-	fontSize: propTypes.number.isRequired
+  compact: propTypes.bool
 }
 
 const styles = StyleSheet.create({
@@ -141,7 +142,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: 0, left: 0, bottom: 0, right: 0,
 		borderWidth: 2.5,
-		borderRadius: defaultStyles.borderRadius,
 		zIndex: -1,
 	}
 })

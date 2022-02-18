@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 		backgroundColor: defaultStyles.colors[100],
 		marginBottom: defaultStyles.spacing.medium,
 		padding: defaultStyles.spacing.medium,
-		borderRadius: defaultStyles.borderRadius,
+		borderRadius: defaultStyles.bigBorderRadius,
 	},
 	text: {
 		color: defaultStyles.colors[700],

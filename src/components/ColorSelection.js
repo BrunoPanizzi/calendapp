@@ -1,22 +1,21 @@
-import React from 'react'
 import { StyleSheet, View, Pressable } from 'react-native'
 
 import defaultStyles from '../styles/defaultStyles'
 
 export default function ColorSelection({ selectedColor, setSelectedColor }) {
-	const colors = [0, 50, 100, 150, 200, 250, 300]
+	const colors = [1, 60, 120, 180, 240, 300]
 
 	return (
 		<View style={styles.selection}>
 			{colors.map(color => (
-				<Pressable 
+				<Pressable
 					key={color}
 					style={[
 						styles.ball,
 						{backgroundColor: `hsla(${color}, 100%, 50%, 0.5)`, borderColor: `hsl(${color}, 75%, 35%)`},
 						color === selectedColor && {borderWidth: 2, transform: [{scale: 1.2}]}
-					]} 
-					onPress={() => setSelectedColor(color)} 
+					]}
+					onPress={() => setSelectedColor(color)}
 				/>
 			))}
 		</View>
@@ -33,6 +32,6 @@ const styles = StyleSheet.create({
 	ball: {
 		width: defaultStyles.spacing.large,
 		height: defaultStyles.spacing.large,
-		borderRadius: 9999,
+		borderRadius: 99,
 	}
 })

@@ -21,7 +21,7 @@ export default function Home() {
 		const calendarsQuery = CalendarService.getCalendars(user.uid)
 		const unsub = onSnapshot(calendarsQuery, (querySnapshot) => {
 			setCalendars(querySnapshot.docs)
-			setLoading(false)
+      setLoading(false)
 		})
 
 		return unsub

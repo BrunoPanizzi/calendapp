@@ -26,7 +26,7 @@ export default function Calendar({ route }) {
 
 		return unsub
 	}, [])
-	
+
 	return (
 		<>
 			<ScrollView style={styles.container} contentContainerStyle={{padding: defaultStyles.spacing.medium}}>
@@ -35,7 +35,7 @@ export default function Calendar({ route }) {
 						<CalendarComp calendar={calendarInfo} />
 					</View>
 					<View style={styles.contentContainer}>
-						{calendarInfo.events.length 
+						{calendarInfo.events.length
 							? <DayDetails events={calendarInfo.events} />
 							: <NoEventsMessage />
 						}
@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: defaultStyles.colors[100],
 		padding: defaultStyles.spacing.medium,
-		borderRadius: defaultStyles.borderRadius
+		borderRadius: defaultStyles.bigBorderRadius
 	}
 })

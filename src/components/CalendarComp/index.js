@@ -20,11 +20,11 @@ export default function CalendarComp({ compact, calendar }) {
       const currentDay = new Date(calendarStart + 24 * 60 * 60 * 1000 * i)
       return (
         <Day
+          compact={compact}
           events={calendar.events || []}
           key={Math.random()}
           day={currentDay}
           isThisMonth={currentDay.getMonth() === month.getMonth()}
-          fontSize={compact ? 10 : 16}
         />
       )
     })

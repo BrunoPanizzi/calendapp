@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 
 import CalendarService from '../services/CalendarService'
 
@@ -8,12 +8,14 @@ import isSameDay from '../utils/isSameDay'
 import defaultStyles from '../styles/defaultStyles'
 
 import useErrors from '../hooks/useErrors'
+import useNotification from '../hooks/useNotification'
 
 import InputGroup from '../components/InputGroup'
 import Input from '../components/Input'
 import DateSelector from '../components/DateSelector'
 import ColorSelection from '../components/ColorSelection'
 import Button from '../components/Button'
+
 
 export default function CreateEvent({ route, navigation }) {
   const { addError, getErrorMessageByField, removeError } = useErrors()
@@ -39,36 +41,28 @@ export default function CreateEvent({ route, navigation }) {
     setStart(date)
   }
 
-
   const handleOpenEndSelector = () => {
     if (!start) {
       addError({field: 'end', message: 'Selecione uma data de inicio primeiro'})
     }
-
     return !!start
   }
   const handleSetColor = colorHue => {
     removeError('color')
     setColor(colorHue)
   }
-
 	const handleSubmit = async () => {
     if (!eventName) {
-      addError({field: 'eventName', message: 'Escolha um nome para o evento'})
-      return
+      return addError({field: 'eventName', message: 'Escolha um nome para o evento'})
     }
-
     if (!start) {
-      addError({field: 'start', message: 'Selecione uma data de inicio'})
-      return
+      return addError({field: 'start', message: 'Selecione uma data de inicio'})
     }
-
     if (!color) {
-      addError({field: 'color', message: 'Escolha uma cor para o evento'})
-      return
+      return addError({field: 'color', message: 'Escolha uma cor para o evento'})
     }
 
-		try {
+    try {
       setLoading(true)
 			await CalendarService.addEvent(route.params, {
 				title: eventName,
@@ -78,6 +72,18 @@ export default function CreateEvent({ route, navigation }) {
 				start: start?.valueOf(),
 				end: end ? end.valueOf() : null, // firestore things, it doesn't understand `undefined`, just `null`
 			})
+
+      // add notification
+      useNotification({
+        title: `${eventName} está prestes a começar!`,
+        time: start.valueOf() - 1000 * 60 * 5
+      })
+
+      end && useNotification({
+        title: `⌛ ${eventName} acabou`,
+        time: end.valueOf()
+      })
+
 			navigation.goBack()
 		} catch (e) {
 			console.log(e)
@@ -86,7 +92,6 @@ export default function CreateEvent({ route, navigation }) {
 		}
 	}
 
-	// TODO add error messages
 	return (
 		<View style={styles.container} >
 
