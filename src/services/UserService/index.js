@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, deleteUser } from 'firebase/auth'
 import { Auth } from '../../../firebase'
 
 class UserService {
@@ -17,6 +17,10 @@ class UserService {
 	signOut() {
 		signOut(Auth)
 	}
+
+  delete() {
+    return deleteUser(this.getCurrentUser())
+  }
 }
 
 export default new UserService()

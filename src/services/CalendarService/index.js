@@ -39,6 +39,15 @@ class CalendarService {
 			})
 		})
 	}
+	deleteEvent(calendarId, eventDetails) {
+		const calendarRef = doc(db, `calendars/${calendarId}`)
+		return updateDoc(calendarRef, {
+			events: arrayRemove({
+				...eventDetails,
+				creatorId: Auth.currentUser.uid
+			})
+		})
+	}
 
 	deleteCalendar(calendarId) {
 		return deleteDoc(doc(db, `calendars/${calendarId}`))

@@ -9,7 +9,6 @@ import Home from './Screens/Home'
 import Calendar from './Screens/Calendar'
 import Login from './Screens/Login'
 import CreateEvent from './Screens/CreateEvent'
-import Configuration from './Screens/Configuration'
 
 import CustomDrawer from './components/CustomDrawer'
 
@@ -118,11 +117,6 @@ function MainNavigation() {
         name='CreateEvent'
         component={CreateEvent}
         options={{title: 'Novo Evento'}}
-      />
-      <Stack.Screen
-        name='Configuration'
-        component={Configuration}
-        options={{title: 'Configurações'}}
       />
     </Stack.Navigator>
   )

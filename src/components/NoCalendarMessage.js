@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
 import defaultStyles from '../styles/defaultStyles'
@@ -7,6 +7,10 @@ import NewCalendarModal from './NewCalendarModal'
 
 export default function NoCalendarMessage() {
   const [modalVisible, setModalVisible] = useState(false)
+
+  useEffect(() => {
+    return () => setModalVisible(false)
+  }, [])
 
 	return (
 		<View style={styles.container}>

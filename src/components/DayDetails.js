@@ -23,15 +23,14 @@ export default function DayDetails({ events }) {
 			eventsOnDate.push(e)
 		}
 	})
-    
+
   return (
     <>
       <Text style={styles.title}>{selectedDay ? parseDate(selectedDay) : 'Selecione um dia'}</Text>
       {eventsOnDate.length ?
         <View style={styles.info}>
-          {eventsOnDate.map(item  => <Event {...item} key={Math.random()} />)}
-        </View>
-        :
+          {eventsOnDate.map(item  => <Event event={item} key={Math.random()} />)}
+        </View> :
         <Text style={styles.noEvents}>Sem eventos...</Text>
       }
     </>

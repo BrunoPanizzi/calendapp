@@ -34,7 +34,7 @@ export default function SmallCalendar({ calendar, id, width }) {
           <Text style={styles.text}>{calendar.title}</Text>
           <Menu
             button={<FontAwesome5 name='ellipsis-v' size={16} color={defaultStyles.colors[600]} />}
-            options={['Excluir', 'opção2', 'opção 3']}
+            options={['Excluir']}
             actions={[() => setDangerModalVisible(true)]}
           />
           <DangerModal
