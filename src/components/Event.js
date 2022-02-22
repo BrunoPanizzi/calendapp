@@ -15,7 +15,8 @@ import DangerModal from './DangerModal'
 
 
 export default function Event({ event }) {
-  const { title, colorHue, description, start, end } = event
+  const { title, colorHue, description, start, end, type } = event
+  const originalEvent = { title, colorHue, description, start, end, type }
   const [dangerModalVisible, setDangerModalVisible] = useState(false)
 
   const { id } = useRoute().params
@@ -54,7 +55,7 @@ export default function Event({ event }) {
       visible={dangerModalVisible}
       onClose={() => setDangerModalVisible(false)}
       dangerLabel='Excluir'
-      dangerousAction={() => CalendarService.deleteEvent(id, event)}
+      dangerousAction={async () => await CalendarService.deleteEvent(id, originalEvent)}
       message={`Você realmente deseja excluir o evento ${title}?`}
       title={`Excluir ${title}`}
     />

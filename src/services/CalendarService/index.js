@@ -41,11 +41,13 @@ class CalendarService {
 	}
 	deleteEvent(calendarId, eventDetails) {
 		const calendarRef = doc(db, `calendars/${calendarId}`)
+    const thing = {
+      ...eventDetails,
+      creatorId: Auth.currentUser.uid
+    }
+    console.log(thing)
 		return updateDoc(calendarRef, {
-			events: arrayRemove({
-				...eventDetails,
-				creatorId: Auth.currentUser.uid
-			})
+			events: arrayRemove(thing)
 		})
 	}
 
