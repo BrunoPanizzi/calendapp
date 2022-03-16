@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator } from '@react-navigation/drawer'
+import { hideAsync } from 'expo-splash-screen'
 
 import { Animated } from 'react-native'
 
@@ -33,14 +34,14 @@ const config = {
 
 const headerConfig = {
   headerStyle: {
-    backgroundColor: defaultStyles.colors[0]
+    backgroundColor: defaultStyles.colors[0],
   },
   headerTintColor: defaultStyles.colors[700],
   headerTitleAlign: 'center',
   headerTitleStyle: {
     fontWeight: 'bold',
-    fontSize: defaultStyles.text.huge
-  }
+    fontSize: defaultStyles.text.huge,
+  },
 }
 
 const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
@@ -50,29 +51,33 @@ const forSlide = ({ current, next, inverted, layouts: { screen } }) => {
       outputRange: [0, 1],
       extrapolate: 'clamp',
     }),
-    next ?
-      next.progress.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 1],
-        extrapolate: 'clamp',
-      }):
-      0
+    next
+      ? next.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
+      : 0
   )
 
   return {
     cardStyle: {
       opacity: progress,
-      transform: [{
-        translateX: Animated.multiply(progress.interpolate({
-          inputRange:  [0, 1, 2],
-          outputRange: [screen.width, 0, screen.width * -0.3],
-          extrapolate: 'clamp',
-        }), inverted),
-      }],
+      transform: [
+        {
+          translateX: Animated.multiply(
+            progress.interpolate({
+              inputRange: [0, 1, 2],
+              outputRange: [screen.width, 0, screen.width * -0.3],
+              extrapolate: 'clamp',
+            }),
+            inverted
+          ),
+        },
+      ],
     },
   }
 }
-
 
 function DrawerNavigation() {
   return (
@@ -80,10 +85,10 @@ function DrawerNavigation() {
       drawerContent={CustomDrawer}
       screenOptions={{
         ...headerConfig,
-        headerShown: true
+        headerShown: true,
       }}
     >
-      <Drawer.Screen name='Home' component={Home} />
+      <Drawer.Screen name="Home" component={Home} />
     </Drawer.Navigator>
   )
 }
@@ -100,23 +105,23 @@ function MainNavigation() {
           open: config,
           close: config,
         },
-        cardStyleInterpolator: forSlide
+        cardStyleInterpolator: forSlide,
       }}
     >
       <Stack.Screen
-        name='Drawer'
+        name="Drawer"
         component={DrawerNavigation}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
-        name='Calendar'
+        name="Calendar"
         component={Calendar}
-        options={({ route }) => ({title: route.params.title})}
+        options={({ route }) => ({ title: route.params.title })}
       />
       <Stack.Screen
-        name='CreateEvent'
+        name="CreateEvent"
         component={CreateEvent}
-        options={{title: 'Novo Evento'}}
+        options={{ title: 'Novo Evento' }}
       />
     </Stack.Navigator>
   )
@@ -124,13 +129,13 @@ function MainNavigation() {
 
 export default function Navigation() {
   const { user } = useContext(AuthContext)
+  const hide = async () => await hideAsync()
+
+  hide()
 
   return (
     <NavigationContainer>
-      {user ?
-        <MainNavigation /> :
-        <Login />
-      }
+      {user ? <MainNavigation /> : <Login />}
     </NavigationContainer>
   )
 }
